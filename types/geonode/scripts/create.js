@@ -71,7 +71,6 @@ function create(params) {
         'dependencies': {
             ...packageJSON.dependencies,
             'geonode-mapstore-client': mapsStoreProjectPackageJSON.devDependencies['geonode-mapstore-client'],
-            'mapstore': mapsStoreProjectPackageJSON.devDependencies.mapstore,
             'mapstore-project': libVersion + ''
         },
         'geonode': {

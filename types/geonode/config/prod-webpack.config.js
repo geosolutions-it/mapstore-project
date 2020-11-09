@@ -12,9 +12,9 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const fs = require('fs');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const appDirectory = fs.realpathSync(process.cwd());
-const isProject = !!fs.existsSync(path.join(appDirectory, 'node_modules', 'geonode_mapstore_client'));
+const isProject = !!fs.existsSync(path.join(appDirectory, 'node_modules', 'geonode-mapstore-client', 'geonode_mapstore_client', 'client'));
 const geoNodeMapStorePath = isProject
-    ? path.join(appDirectory, 'node_modules', 'geonode_mapstore_client')
+    ? path.join(appDirectory, 'node_modules', 'geonode-mapstore-client', 'geonode_mapstore_client', 'client')
     : path.join(appDirectory);
 const mapStorePath = path.join(appDirectory, 'node_modules', 'mapstore');
 const frameworkPath = path.join(mapStorePath, 'web', 'client');

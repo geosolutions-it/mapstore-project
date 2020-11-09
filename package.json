@@ -103,6 +103,7 @@
     "yargs": "16.1.0"
   },
   "devDependencies": {
+    "geonode-mapstore-client": "git+https://github.com/allyoucanmap/geonode-mapstore-client#a445a419482a8251bd1ca2d80b94e6120f79099d",
     "mapstore": "git+https://github.com/geosolutions-it/MapStore2.git#055bca9267765532cdf99f840333b3c485d7b0fb"
   }
 }
