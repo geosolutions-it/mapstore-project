@@ -1,0 +1,6 @@
+debug.log
+node_modules/
+test-project/
+package-lock.json
+version.txt
+*.tgz
