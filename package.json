@@ -22,8 +22,8 @@
   "bin": {
     "mapstore-project": "bin/mapstore-project.js"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "GeoSolutions",
+  "license": "BSD-2-Clause",
   "dependencies": {
     "@babel/core": "7.8.7",
     "@babel/plugin-proposal-class-properties": "7.8.3",
