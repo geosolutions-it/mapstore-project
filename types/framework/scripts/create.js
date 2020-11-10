@@ -77,7 +77,7 @@ function create(params) {
         'dependencies': {
             ...packageJSON.dependencies,
             'mapstore': mapsStoreProjectPackageJSON.devDependencies.mapstore,
-            'mapstore-project': libVersion + ''
+            '@mapstore/project': libVersion + ''
         }
     };
 

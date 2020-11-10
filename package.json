@@ -1,5 +1,5 @@
 {
-  "name": "mapstore-project",
+  "name": "@mapstore/project",
   "version": "1.0.0",
   "description": "create a mapstore project",
   "main": "index.js",
