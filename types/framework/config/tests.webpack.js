@@ -6,6 +6,6 @@
  * LICENSE file in the root directory of this source tree.
 */
 
-var context = require.context('../../../../../js', true, /-test\.jsx?$/);
+var context = require.context('../../../../../../js', true, /-test\.jsx?$/);
 context.keys().forEach(context);
 module.exports = context;
