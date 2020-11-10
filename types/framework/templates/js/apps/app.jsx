@@ -1,4 +1,3 @@
-
 import main from '@mapstore/framework/components/app/main';
 import {
     setLocalConfigurationFile,
