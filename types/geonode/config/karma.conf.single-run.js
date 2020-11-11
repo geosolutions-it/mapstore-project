@@ -13,27 +13,29 @@ const isProject = !!fs.existsSync(path.join(appDirectory, 'node_modules', 'geono
 const geoNodeMapStorePath = isProject
     ? path.join(appDirectory, 'node_modules', 'geonode-mapstore-client', 'geonode_mapstore_client', 'client')
     : path.join(appDirectory);
-const mapStorePath = path.join(appDirectory, 'node_modules', 'mapstore');
+const mapStorePath = fs.realpathSync(path.join(appDirectory, 'node_modules', 'mapstore'));
 const frameworkPath = path.join(mapStorePath, 'web', 'client');
 const projectConfig = require('./index.js');
 
-const testWebpack = isProject ? 'tests-project.webpack.js' : 'tests.webpack.js';
+const testWebpack = 'tests.webpack.js';
 
 module.exports = function karmaConfig(config) {
+
+    const code = [
+        path.join(geoNodeMapStorePath, 'js'),
+        path.join(appDirectory, 'js'),
+        frameworkPath,
+        // add MapStore2 path for "file:MapStore2" installation
+        // to target the correct directory
+        ...(isProject ? [] : [ path.join(appDirectory, 'MapStore2', 'web', 'client') ])
+    ];
 
     const testConfig = require(path.join(mapStorePath, 'build', 'testConfig.js'))({
         files: [
             path.join(__dirname, testWebpack),
             ...(isProject ? [] : [{ pattern: './MapStore2/**/*', included: false }])
         ],
-        path: [
-            path.join(geoNodeMapStorePath, 'js'),
-            path.join(appDirectory, 'js'),
-            frameworkPath,
-            // add MapStore2 path for "file:MapStore2" installation
-            // to target the correct directory
-            ...(isProject ? [] : [ path.join(appDirectory, 'MapStore2', 'web', 'client') ])
-        ],
+        path: code,
         basePath: appDirectory,
         testFile: path.join(__dirname, testWebpack),
         singleRun: true,
@@ -44,17 +46,29 @@ module.exports = function karmaConfig(config) {
         }
     });
 
-    testConfig.webpack.module.rules = [{
-        test: /\.jsx?$/,
-        exclude: /(__tests__|node_modules|legacy|libs\\Cesium|libs\\html2canvas)\\|(__tests__|node_modules|legacy|libs\/Cesium|libs\/html2canvas)\/|webpack\.js|utils\/(openlayers|leaflet)/,
-        enforce: "post",
-        use: [
-            {
-                loader: 'istanbul-instrumenter-loader',
-                options: { esModules: true }
+    testConfig.webpack.module.rules = [
+        {
+            test: /\.jsx?$/,
+            exclude: /(__tests__|node_modules|legacy|libs\\Cesium|libs\\html2canvas)\\|(__tests__|node_modules|legacy|libs\/Cesium|libs\/html2canvas)\/|webpack\.js|utils\/(openlayers|leaflet)/,
+            enforce: 'post',
+            use: [
+                {
+                    loader: 'istanbul-instrumenter-loader',
+                    options: { esModules: true }
+                }
+            ]
+        },
+        ...testConfig.webpack.module.rules.map((rule) => {
+            // remove exclude node_modules for project
+            // to get node_modules/mapstore
+            if (isProject && rule && rule.use && rule.use[0] && rule.use[0].loader === 'babel-loader') {
+                return {
+                    ...rule,
+                    exclude: undefined
+                };
             }
-        ]
-    }, ...testConfig.webpack.module.rules];
+            return rule;
+        })];
 
     testConfig.webpack.resolve.modules = [
         // resolve module installed inside the MapStore2 submodule

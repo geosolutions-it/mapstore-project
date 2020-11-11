@@ -42,6 +42,19 @@ module.exports = function karmaConfig(config) {
         }
     });
 
+    testConfig.webpack.module.rules = [
+        ...testConfig.webpack.module.rules.map((rule) => {
+            // remove exclude node_modules for project
+            // to get node_modules/mapstore
+            if (isProject && rule && rule.use && rule.use[0] && rule.use[0].loader === 'babel-loader') {
+                return {
+                    ...rule,
+                    exclude: undefined
+                };
+            }
+            return rule;
+        })];
+
     testConfig.webpack.resolve.modules = [
         // resolve module installed inside the MapStore2 submodule
         // it's needed for project that install MapStore dependency with
