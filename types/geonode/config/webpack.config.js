@@ -26,6 +26,9 @@ const projectConfig = require('./index.js');
 const DEV_SERVER_HOST = projectConfig.devServer.host;
 const protocol = projectConfig.devServer.protocol;
 
+const geoNodeMapStoreAppsPath = path.join(geoNodeMapStorePath, 'js', 'apps');
+const geoNodeMapStoreApps = fs.existsSync(geoNodeMapStoreAppsPath) ? fs.readdirSync(geoNodeMapStoreAppsPath) : [];
+
 module.exports = () => {
 
     const mapStoreConfig = buildConfig(
@@ -57,9 +60,13 @@ module.exports = () => {
         ...mapStoreConfig,
         entry: {
             'ms2-geonode-api': path.join(geoNodeMapStorePath, 'js', 'api'),
+            ...geoNodeMapStoreApps.reduce((acc, name) => ({
+                ...acc,
+                [name.replace(/\.jsx|\.js/g, '')]: path.join(appDirectory, 'js', 'apps', name)
+            }), {}),
             ...(projectConfig.apps || []).reduce((acc, name) => ({
                 ...acc,
-                [name]: path.join(appDirectory, 'js', 'apps', name)
+                [name.replace(/\.jsx|\.js/g, '')]: path.join(appDirectory, 'js', 'apps', name)
             }), {}),
             'themes/default': path.join(geoNodeMapStorePath, 'themes', 'default', 'theme.less'),
             'themes/preview': path.join(geoNodeMapStorePath, 'themes', 'preview', 'theme.less'),
