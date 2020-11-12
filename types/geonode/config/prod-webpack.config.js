@@ -119,6 +119,20 @@ module.exports = () => {
                 path.join(mapStorePath, 'node_modules'),
                 'node_modules'
             ]
+        },
+        module: {
+            ...mapStoreConfig.module,
+            rules: [
+                ...mapStoreConfig.module.rules,
+                {
+                    test: /\.s[ac]ss$/i,
+                    use: [
+                        'style-loader',
+                        'css-loader',
+                        'sass-loader'
+                    ]
+                }
+            ]
         }
     };
 };
