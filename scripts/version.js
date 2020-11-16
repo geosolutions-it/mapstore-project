@@ -12,28 +12,28 @@ const childProcess = require('child_process');
 const yargs = require('yargs/yargs');
 const { hideBin } = require('yargs/helpers');
 const message = require('./utils/message');
+const info = require('./utils/info');
 
 const appDirectory = fs.realpathSync(process.cwd());
 const versionFileDestination = path.join(appDirectory, 'version.txt');
 
 const argv = yargs(hideBin(process.argv)).argv;
 
-if (argv.v) {
-    childProcess.execSync(`npm version ${argv.v}`);
+const versionPath = path.join(__dirname, '..', 'types', argv.type, 'scripts', 'version.js');
+if (fs.existsSync(versionPath)) {
+    childProcess
+        .execSync(
+            `node ${versionPath}`,
+            { stdio: 'inherit' }
+        );
+} else {
+    // standard script
+    if (argv.v) {
+        childProcess.execSync(`npm version ${argv.v}`);
+    }
+
+    const { name, version, commit } = info();
+
+    fs.writeFileSync(versionFileDestination, `${name}-v${version}-${commit}`);
+    message.title(`update version -> version ${version} - commit ${commit}`);
 }
-
-const packageJSON = require(path.resolve(appDirectory, 'package.json')) || {};
-const version = packageJSON.version;
-const name = packageJSON.name;
-let commit;
-
-try {
-    commit = childProcess
-        .execSync('git rev-parse HEAD')
-        .toString().trim();
-} catch (e) {
-    commit = '';
-}
-
-fs.writeFileSync(versionFileDestination, `${name}-v${version}-${commit}`);
-message.title(`update version -> version ${version} - commit ${commit}`);

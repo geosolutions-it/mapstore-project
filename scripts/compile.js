@@ -29,8 +29,8 @@ const versionPath = path.join(__dirname, 'version.js');
 childProcess
     .execSync(
         argv.v
-            ? `node ${versionPath} --v=${argv.v}`
-            : `node ${versionPath}`,
+            ? `node ${versionPath} --v=${argv.v} --type=${argv.type}`
+            : `node ${versionPath} --type=${argv.type}`,
         { stdio: 'inherit' }
     );
 

@@ -66,14 +66,6 @@ module.exports = () => {
             // new BundleAnalyzerPlugin(),
 
             new CopyWebpackPlugin([
-                ...(isProject
-                    ? []
-                    : [
-                        {
-                            from: path.resolve(appDirectory, 'module'),
-                            to: path.resolve(staticPath, 'module')
-                        }
-                    ]),
                 ...Object.keys(projectConfig.translations).map((key) => ({
                     from: projectConfig.translations[key][0],
                     to: path.resolve(appDirectory, staticPath + '/' + projectConfig.translations[key][1])
