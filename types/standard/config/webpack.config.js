@@ -98,7 +98,16 @@ module.exports = () => {
     );
 
     mapStoreConfig.devServer.contentBase = isProject ? '.' : 'web/client';
-
+    mapStoreConfig.resolve = {
+        ...mapStoreConfig.resolve,
+        modules: [
+            // resolve module installed inside the MapStore2 submodule
+            // it's needed for project that install MapStore dependency with
+            // "file:MapStore2"
+            fs.realpathSync(path.join(appDirectory, 'node_modules', 'mapstore', 'node_modules')),
+            'node_modules'
+        ]
+    };
     if (projectConfig.devServer) {
         mapStoreConfig.devServer = projectConfig.devServer;
     }
