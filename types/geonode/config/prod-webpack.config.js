@@ -66,6 +66,10 @@ module.exports = () => {
             // new BundleAnalyzerPlugin(),
 
             new CopyWebpackPlugin([
+                {
+                    from: path.resolve(appDirectory, 'static/mapstore'),
+                    to: path.resolve(appDirectory, staticPath)
+                },
                 ...Object.keys(projectConfig.translations).map((key) => ({
                     from: projectConfig.translations[key][0],
                     to: path.resolve(appDirectory, staticPath + '/' + projectConfig.translations[key][1])
