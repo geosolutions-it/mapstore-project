@@ -104,7 +104,9 @@ module.exports = () => {
             // resolve module installed inside the MapStore2 submodule
             // it's needed for project that install MapStore dependency with
             // "file:MapStore2"
-            fs.realpathSync(path.join(appDirectory, 'node_modules', 'mapstore', 'node_modules')),
+            ...(fs.existsSync(path.join(appDirectory, 'node_modules', 'mapstore', 'node_modules'))
+                ? [fs.realpathSync(path.join(appDirectory, 'node_modules', 'mapstore', 'node_modules'))]
+                : []),
             'node_modules'
         ]
     };
