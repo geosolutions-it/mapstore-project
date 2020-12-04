@@ -60,7 +60,7 @@ const translations = !isProject
         '/static/mapstore/gn-translations': [
             path.join(geoNodeMapStorePath, 'static', 'mapstore', 'translations'),
             'gn-translations',
-            '/node_modules/geonode-mapstore-client/static/mapstore/translations'
+            '/node_modules/geonode-mapstore-client/geonode_mapstore_client/client/static/mapstore/translations'
         ],
         ...( fs.existsSync(path.join(appDirectory, 'static', 'mapstore', 'translations'))
             && {'/static/mapstore/project-translations': [
