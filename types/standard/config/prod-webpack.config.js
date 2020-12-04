@@ -18,6 +18,7 @@ const publicPath = '';
 const output = 'dist/';
 
 const projectConfig = require('./index.js');
+const defaultProperties = require('./constants')
 
 const isProject = !fs.existsSync(path.join(appDirectory, 'web', 'client', 'product'));
 
@@ -83,11 +84,11 @@ module.exports = buildConfig(
                 // mapstore product
                 { from: path.join(paths.framework, 'configs'), to: path.join(paths.dist, 'configs') },
                 { from: path.join(paths.framework, 'translations'), to: path.join(paths.dist, 'translations') },
-                { from: path.join(paths.framework, 'unsupportedBrowser.html'), to: paths.dist },
-                { from: path.join(paths.framework, 'config.json'), to: paths.dist },
-                { from: path.join(paths.framework, 'new.json'), to: paths.dist },
-                { from: path.join(paths.framework, 'localConfig.json'), to: paths.dist },
-                { from: path.join(paths.framework, 'pluginsConfig.json'), to: paths.dist },
+                { from: path.join(paths.framework, 'unsupportedBrowser.html'), to: paths.dist }, // todo move
+                { from: path.join(paths.framework, 'config.json'), to: paths.dist },// todo remove
+                { from: path.join(paths.framework, 'new.json'), to: paths.dist },// todo remove
+                { from: path.join(paths.framework, 'localConfig.json'), to: paths.dist },// todo remove
+                { from: path.join(paths.framework, 'pluginsConfig.json'), to: paths.dist }, // todo remove
                 { from: path.join(paths.framework, 'libs', 'cesium-navigation'), to: path.join(paths.dist, 'libs', 'cesium-navigation') },
                 { from: path.join(paths.framework, 'version.txt'), to: path.join(paths.dist, 'version.txt') }
             ]),
@@ -97,10 +98,7 @@ module.exports = buildConfig(
                 filename: key,
                 template: projectConfig.htmlTemplates[key],
                 templateParameters: {
-                    title: 'MapStore2',
-                    indexTitle: 'MapStore HomePage',
-                    apiTitle: 'Page with MapStore API',
-                    embeddedTitle: 'MapStore HomePage',
+                    ...defaultProperties,
                     ...projectConfig.templateParameters,
                     version: projectConfig.version,
                     name: projectConfig.name

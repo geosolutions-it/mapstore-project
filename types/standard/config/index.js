@@ -29,6 +29,7 @@ const devServer = isProject && fs.existsSync(devServerPath) ? require(devServerP
 const defaultHtmlTemplates = {
     'index.html': path.resolve(__dirname, '../index.ejs'),
     'embedded.html': path.resolve(__dirname, '../embedded.ejs'),
+    'unsupportedBrowser.html': path.resolve(__dirname, '../unsupportedBrowser.ejs'),
     'api.html': path.resolve(__dirname, '../api.ejs')
 };
 
@@ -36,7 +37,7 @@ const htmlTemplates = fs.readdirSync(appDirectory)
     .filter((file) => file.indexOf('.ejs') !== -1)
     .reduce((acc, file) => ({
         ...acc,
-        [file.replace('.ejs', '') + '.html']: path.join(appDirectory, file)
+        [file.replace('.ejs', '.html') ]: path.join(appDirectory, file)
     }), {});
 
 module.exports = {
