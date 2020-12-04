@@ -62,7 +62,7 @@ module.exports = () => {
             'ms2-geonode-api': path.join(geoNodeMapStorePath, 'js', 'api'),
             ...geoNodeMapStoreApps.reduce((acc, name) => ({
                 ...acc,
-                [name.replace(/\.jsx|\.js/g, '')]: path.join(appDirectory, 'js', 'apps', name)
+                [name.replace(/\.jsx|\.js/g, '')]: path.join(geoNodeMapStorePath, 'js', 'apps', name)
             }), {}),
             ...(projectConfig.apps || []).reduce((acc, name) => ({
                 ...acc,
