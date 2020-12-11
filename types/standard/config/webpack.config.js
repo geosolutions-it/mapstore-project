@@ -73,6 +73,13 @@ module.exports = () => {
         },
         undefined,
         [
+            new DefinePlugin({
+                '__MAPSTORE_PROJECT_CONFIG__': JSON.stringify({
+                    themePath: publicPath + 'themes',
+                    themePrefix: themePrefix,
+                    version: 'dev',
+                })
+            }),
             ...Object.keys(projectConfig.htmlTemplates).map((key) =>
                 new HtmlWebpackPlugin({
                     inject: false,
@@ -85,13 +92,7 @@ module.exports = () => {
                         name: projectConfig.name
                     }
                 })
-            ),
-            new DefinePlugin({
-                '__MAPSTORE_PROJECT_CONFIG__': JSON.stringify({
-                    themePath: publicPath + 'themes',
-                    themePrefix: themePrefix
-                })
-            })
+            )
         ]
     );
 
