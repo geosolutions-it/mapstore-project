@@ -18,7 +18,7 @@ const publicPath = '';
 const output = 'dist/';
 
 const projectConfig = require('./index.js');
-const defaultProperties = require('./constants')
+const templateParameters = require('./templateParameters')
 
 const isProject = !fs.existsSync(path.join(appDirectory, 'web', 'client', 'product'));
 
@@ -98,7 +98,7 @@ module.exports = buildConfig(
                 filename: key,
                 template: projectConfig.htmlTemplates[key],
                 templateParameters: {
-                    ...defaultProperties,
+                    ...templateParameters,
                     ...projectConfig.templateParameters,
                     version: projectConfig.version,
                     name: projectConfig.name
