@@ -17,6 +17,7 @@ const publicPath = '';
 const output = '';
 
 const projectConfig = require('./index.js');
+const templateParameters = require('./templateParameters')
 
 const isProject = !fs.existsSync(path.join(appDirectory, 'web', 'client', 'product'));
 
@@ -78,10 +79,7 @@ module.exports = () => {
                     filename: key,
                     template: projectConfig.htmlTemplates[key],
                     templateParameters: {
-                        title: 'MapStore2',
-                        indexTitle: 'MapStore HomePage',
-                        apiTitle: 'Page with MapStore API',
-                        embeddedTitle: 'MapStore HomePage',
+                        ...templateParameters,
                         ...projectConfig.templateParameters,
                         version: 'dev',
                         name: projectConfig.name

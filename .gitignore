@@ -4,3 +4,4 @@ test-project/
 package-lock.json
 version.txt
 *.tgz
+.vscode
