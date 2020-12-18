@@ -24,7 +24,18 @@ const appsPath = path.join(appDirectory, 'js', 'apps');
 const devServerPath = path.join(appDirectory, 'devServer.js');
 const themes = isProject && fs.existsSync(themesPath) ? fs.readdirSync(themesPath) : [];
 const apps = isProject && fs.existsSync(appsPath) ? fs.readdirSync(appsPath) : [];
-const devServer = isProject && fs.existsSync(devServerPath) ? require(devServerPath) : undefined;
+const devServerDefault = {
+    proxy: {
+        '/ms-translations': {
+            target: 'http://localhost:8081/MapStore2/web/client',
+            pathRewrite: {'^/ms-translations': '/translations'}
+        },
+        '/libs': {
+            target: 'http://localhost:8081/MapStore2/web/client'
+        }
+    }
+};
+const devServer = isProject && fs.existsSync(devServerPath) ? require(devServerPath) : () => devServerDefault;
 
 const defaultHtmlTemplates = {
     'index.html': path.resolve(__dirname, '../index.ejs'),
@@ -46,7 +57,7 @@ module.exports = {
     // translations,
     themes,
     apps,
-    devServer,
+    devServer: devServer(devServerDefault),
     htmlTemplates: {
         ...defaultHtmlTemplates,
         ...htmlTemplates

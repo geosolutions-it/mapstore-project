@@ -77,18 +77,10 @@ module.exports = buildConfig(
                 version: projectConfig.version
             })
         }),
-
-        new CopyWebpackPlugin(isProject
-            ? []
-            : [
+        new CopyWebpackPlugin([
                 // mapstore product
                 { from: path.join(paths.framework, 'configs'), to: path.join(paths.dist, 'configs') },
-                { from: path.join(paths.framework, 'translations'), to: path.join(paths.dist, 'translations') },
-                { from: path.join(paths.framework, 'unsupportedBrowser.html'), to: paths.dist }, // todo move
-                { from: path.join(paths.framework, 'config.json'), to: paths.dist },// todo remove
-                { from: path.join(paths.framework, 'new.json'), to: paths.dist },// todo remove
-                { from: path.join(paths.framework, 'localConfig.json'), to: paths.dist },// todo remove
-                { from: path.join(paths.framework, 'pluginsConfig.json'), to: paths.dist }, // todo remove
+                { from: path.join(paths.framework, 'translations'), to: path.join(paths.dist, 'translations') }, //TODO RENAME MS2 
                 { from: path.join(paths.framework, 'libs', 'cesium-navigation'), to: path.join(paths.dist, 'libs', 'cesium-navigation') },
                 { from: path.join(paths.framework, 'version.txt'), to: path.join(paths.dist, 'version.txt') }
             ]),
