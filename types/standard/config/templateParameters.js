@@ -3,7 +3,7 @@ module.exports = {
     titleIndex: "MapStore",
     titleEmbedded: "MapStore",
     titleApi: "Page with MapStore API",
-    favicon: "img/favicon.ico",
+    favicon: "assets/img/favicon.ico",
     loadingMessageIndex: "Loading MapStore",
     loadingMessageEmbedded: "Loading MapStore"
-}
+};

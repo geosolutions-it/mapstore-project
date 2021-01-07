@@ -73,8 +73,7 @@ function create(params) {
             'compile': 'mapstore-project compile geonode',
             'start': 'mapstore-project start geonode',
             'test': 'mapstore-project test geonode',
-            'test:watch': 'mapstore-project test:watch geonode',
-            'update-project': 'mapstore-project update geonode'
+            'test:watch': 'mapstore-project test:watch geonode'
         },
         'dependencies': {
             ...packageJSON.dependencies,

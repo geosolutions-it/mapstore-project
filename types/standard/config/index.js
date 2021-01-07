@@ -26,12 +26,28 @@ const themes = isProject && fs.existsSync(themesPath) ? fs.readdirSync(themesPat
 const apps = isProject && fs.existsSync(appsPath) ? fs.readdirSync(appsPath) : [];
 const devServerDefault = {
     proxy: {
+        '/rest': {
+            target: 'http://localhost:8080/mapstore'
+        },
+        '/pdf': {
+            target: 'http://localhost:8080/mapstore'
+        },
+        '/mapstore/pdf': {
+            target: 'http://localhost:8080'
+        },
+        '/proxy': {
+            target: 'http://localhost:8080/mapstore'
+        },
+        '/docs': {
+            target: 'http://localhost:8081',
+            pathRewrite: {'/docs': '/mapstore/docs'}
+        },
         '/ms-translations': {
-            target: 'http://localhost:8081/MapStore2/web/client',
+            target: 'http://localhost:8081/node_modules/mapstore/web/client',
             pathRewrite: {'^/ms-translations': '/translations'}
         },
         '/libs': {
-            target: 'http://localhost:8081/MapStore2/web/client'
+            target: 'http://localhost:8081/node_modules/mapstore/web/client'
         }
     }
 };

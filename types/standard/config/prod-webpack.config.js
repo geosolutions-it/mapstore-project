@@ -18,7 +18,7 @@ const publicPath = '';
 const output = 'dist/';
 
 const projectConfig = require('./index.js');
-const templateParameters = require('./templateParameters')
+const templateParameters = require('./templateParameters');
 
 const isProject = !fs.existsSync(path.join(appDirectory, 'web', 'client', 'product'));
 
@@ -78,12 +78,12 @@ module.exports = buildConfig(
             })
         }),
         new CopyWebpackPlugin([
-                // mapstore product
-                { from: path.join(paths.framework, 'configs'), to: path.join(paths.dist, 'configs') },
-                { from: path.join(paths.framework, 'translations'), to: path.join(paths.dist, 'translations') }, //TODO RENAME MS2 
-                { from: path.join(paths.framework, 'libs', 'cesium-navigation'), to: path.join(paths.dist, 'libs', 'cesium-navigation') },
-                { from: path.join(paths.framework, 'version.txt'), to: path.join(paths.dist, 'version.txt') }
-            ]),
+            // mapstore product
+            { from: path.join(paths.framework, 'configs'), to: path.join(paths.dist, 'configs') },
+            { from: path.join(paths.framework, 'translations'), to: path.join(paths.dist, 'translations') }, // TODO RENAME MS2
+            { from: path.join(paths.framework, 'libs', 'cesium-navigation'), to: path.join(paths.dist, 'libs', 'cesium-navigation') },
+            { from: path.join(paths.framework, 'version.txt'), to: path.join(paths.dist, 'version.txt') }
+        ]),
         ...Object.keys(projectConfig.htmlTemplates).map((key) =>
             new HtmlWebpackPlugin({
                 inject: false,

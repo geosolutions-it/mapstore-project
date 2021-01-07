@@ -12,7 +12,7 @@ const path = require('path');
 const message = require('../scripts/utils/message');
 
 const command = process.argv[2] &&  process.argv[2].replace(':', '') || 'create';
-const type = process.argv[3] || 'framework';
+const type = process.argv[3] || 'standard';
 
 const commands = [
     'create',

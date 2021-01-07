@@ -68,11 +68,10 @@ function create(params) {
         'eslintConfig': mapsStoreProjectPackageJSON.eslintConfig,
         'scripts': {
             ...packageJSON.scripts,
-            'compile': 'mapstore-project compile',
-            'start': 'mapstore-project start',
-            'test': 'mapstore-project test',
-            'test:watch': 'mapstore-project test:watch',
-            'update-project': 'mapstore-project update'
+            'compile': 'mapstore-project compile framework',
+            'start': 'mapstore-project start framework',
+            'test': 'mapstore-project test framework',
+            'test:watch': 'mapstore-project test:watch framework'
         },
         'dependencies': {
             ...packageJSON.dependencies,

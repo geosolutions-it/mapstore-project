@@ -17,7 +17,7 @@ const publicPath = '';
 const output = '';
 
 const projectConfig = require('./index.js');
-const templateParameters = require('./templateParameters')
+const templateParameters = require('./templateParameters');
 
 const isProject = !fs.existsSync(path.join(appDirectory, 'web', 'client', 'product'));
 
@@ -77,7 +77,7 @@ module.exports = () => {
                 '__MAPSTORE_PROJECT_CONFIG__': JSON.stringify({
                     themePath: publicPath + 'themes',
                     themePrefix: themePrefix,
-                    version: 'dev',
+                    version: 'dev'
                 })
             }),
             ...Object.keys(projectConfig.htmlTemplates).map((key) =>
