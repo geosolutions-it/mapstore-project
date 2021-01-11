@@ -10,7 +10,6 @@ const path = require('path');
 const fs = require('fs');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const DefinePlugin = require('webpack/lib/DefinePlugin');
 const appDirectory = fs.realpathSync(process.cwd());
 
 const publicPath = '';
@@ -46,15 +45,18 @@ const themePrefix = projectConfig.name;
 
 module.exports = () => {
 
-    const mapStoreConfig = buildConfig(
-        {
+    return buildConfig({
+        prod: false,
+        publicPath,
+        cssPrefix: `.${themePrefix}`,
+        bundles: {
             'js/mapstore': path.join(webClientProductPath, 'app'),
             ...(projectConfig.apps || []).reduce((acc, name) => ({
                 ...acc,
                 ['js/' + name.replace(/\.jsx|\.js/g, '')]: path.join(appDirectory, 'js', 'apps', name)
             }), {})
         },
-        {
+        themeEntries: {
             'themes/default': path.join(paths.framework, 'themes', 'default', 'theme.less'),
             ...(projectConfig.themes || []).reduce((acc, name) => ({
                 ...acc,
@@ -62,24 +64,12 @@ module.exports = () => {
             }), {})
         },
         paths,
-        extractThemesPlugin,
-        false,
-        publicPath,
-        `.${themePrefix}`,
-        [],
-        {
+        alias: {
             '@mapstore/framework': paths.framework,
             '@js': path.resolve(appDirectory, 'js')
         },
-        undefined,
-        [
-            new DefinePlugin({
-                '__MAPSTORE_PROJECT_CONFIG__': JSON.stringify({
-                    themePath: publicPath + 'themes',
-                    themePrefix: themePrefix,
-                    version: 'dev'
-                })
-            }),
+        plugins: [
+            extractThemesPlugin,
             ...Object.keys(projectConfig.htmlTemplates).map((key) =>
                 new HtmlWebpackPlugin({
                     inject: false,
@@ -93,13 +83,13 @@ module.exports = () => {
                     }
                 })
             )
-        ]
-    );
-
-    mapStoreConfig.devServer.contentBase = isProject ? '.' : 'web/client';
-    mapStoreConfig.resolve = {
-        ...mapStoreConfig.resolve,
-        modules: [
+        ],
+        projectConfig: {
+            themePath: publicPath + 'themes',
+            themePrefix: themePrefix,
+            version: 'dev'
+        },
+        resolveModules: [
             // resolve module installed inside the MapStore2 submodule
             // it's needed for project that install MapStore dependency with
             // "file:MapStore2"
@@ -107,11 +97,10 @@ module.exports = () => {
                 ? [fs.realpathSync(path.join(appDirectory, 'node_modules', 'mapstore', 'node_modules'))]
                 : []),
             'node_modules'
-        ]
-    };
-    if (projectConfig.devServer) {
-        mapStoreConfig.devServer = projectConfig.devServer;
-    }
-
-    return mapStoreConfig;
+        ],
+        devServer: {
+            contentBase: isProject ? '.' : 'web/client',
+            ...projectConfig.devServer
+        }
+    });
 };

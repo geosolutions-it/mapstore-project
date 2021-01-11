@@ -28,7 +28,11 @@
     </head>
     <body onload="init()">
         <div id="container" class="ms2"></div>
-        <script id="ms2-api" src="<%= htmlWebpackPlugin.files.js.find((fileName) => fileName.indexOf('ms2-api') !== -1) %>"></script>
+        <% for(var i=0; i < htmlWebpackPlugin.files.js.length; i++) { %>
+            <% if (htmlWebpackPlugin.files.js[i].indexOf('ms2-api') !== -1) { %>
+            <script src="<%= htmlWebpackPlugin.files.js[i] %>"></script>
+            <% } %>
+        <% } %>
         <script type="text/javascript">
         function init() {
             MapStore2.create('container', {

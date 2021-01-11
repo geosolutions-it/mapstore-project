@@ -17,10 +17,10 @@ message.title('start dev');
 
 const argv = yargs(hideBin(process.argv)).argv;
 const appDirectory = fs.realpathSync(process.cwd());
-const webpackDevServerPath = path.join(appDirectory, 'node_modules', '.bin', 'webpack-dev-server');
+const webpackDevServerPath = path.join(appDirectory, 'node_modules', '.bin', 'webpack');
 const webpackConfigPath = path.join(__dirname, '..', 'types', argv.type, 'config', 'webpack.config.js');
 childProcess
     .execSync(
-        `${webpackDevServerPath} --progress --colors --port ${argv.port || '8081'} --hot --inline --config ${webpackConfigPath}`,
+        `${webpackDevServerPath} serve --progress --color --port ${argv.port || '8081'} --hot --inline --config ${webpackConfigPath}`,
         { stdio: 'inherit' }
     );

@@ -10,7 +10,6 @@ const path = require('path');
 const fs = require('fs');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const DefinePlugin = require('webpack/lib/DefinePlugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const appDirectory = fs.realpathSync(process.cwd());
 
@@ -47,8 +46,8 @@ const paths = {
 
 const themePrefix = projectConfig.name;
 
-module.exports = buildConfig(
-    {
+module.exports = buildConfig({
+    bundles: {
         'js/mapstore': path.join(webClientProductPath, 'app'),
         'js/embedded': path.join(webClientProductPath, 'embedded'),
         'js/ms2-api': path.join(webClientProductPath, 'api'),
@@ -57,7 +56,7 @@ module.exports = buildConfig(
             ['js/' + name.replace(/\.jsx|\.js/g, '')]: path.join(appDirectory, 'js', 'apps', name)
         }), {})
     },
-    {
+    themeEntries: {
         'themes/default': path.join(paths.framework, 'themes', 'default', 'theme.less'),
         ...(projectConfig.themes || []).reduce((acc, name) => ({
             ...acc,
@@ -65,24 +64,20 @@ module.exports = buildConfig(
         }), {})
     },
     paths,
-    extractThemesPlugin,
-    true,
-    publicPath,
-    `.${themePrefix}`,
-    [
-        new DefinePlugin({
-            '__MAPSTORE_PROJECT_CONFIG__': JSON.stringify({
-                themePath: publicPath + 'themes',
-                themePrefix: themePrefix,
-                version: projectConfig.version
-            })
-        }),
+    plugins: [
+        extractThemesPlugin,
         new CopyWebpackPlugin([
             // mapstore product
-            { from: path.join(paths.framework, 'configs'), to: path.join(paths.dist, 'configs') },
-            { from: path.join(paths.framework, 'translations'), to: path.join(paths.dist, 'translations') }, // TODO RENAME MS2
+            { from: path.join(paths.framework, 'configs'), to: path.join(paths.dist, 'ms-configs') },
+            { from: path.join(paths.framework, 'translations'), to: path.join(paths.dist, 'ms-translations') },
             { from: path.join(paths.framework, 'libs', 'cesium-navigation'), to: path.join(paths.dist, 'libs', 'cesium-navigation') },
-            { from: path.join(paths.framework, 'version.txt'), to: path.join(paths.dist, 'version.txt') }
+            { from: path.join(paths.base, 'configs'), to: path.join(paths.dist, 'configs') },
+            ...fs.existsSync(path.join(paths.base, 'assets'))
+                ? [{ from: path.join(paths.base, 'assets'), to: path.join(paths.dist, 'assets') }]
+                : [],
+            ...fs.existsSync(path.join(paths.base, 'static'))
+                ? [{ from: path.join(paths.base, 'static'), to: path.join(paths.dist, 'static') }]
+                : []
         ]),
         ...Object.keys(projectConfig.htmlTemplates).map((key) =>
             new HtmlWebpackPlugin({
@@ -98,9 +93,25 @@ module.exports = buildConfig(
             })
         )
     ],
-    {
+    prod: true,
+    publicPath,
+    cssPrefix: `.${themePrefix}`,
+    alias: {
         '@mapstore/framework': paths.framework,
         '@js': path.resolve(appDirectory, 'js')
     },
-    undefined
-);
+    projectConfig: {
+        themePath: publicPath + 'themes',
+        themePrefix: themePrefix,
+        version: projectConfig.version
+    },
+    resolveModules: [
+        // resolve module installed inside the MapStore2 submodule
+        // it's needed for project that install MapStore dependency with
+        // "file:MapStore2"
+        ...(fs.existsSync(path.join(appDirectory, 'node_modules', 'mapstore', 'node_modules'))
+            ? [fs.realpathSync(path.join(appDirectory, 'node_modules', 'mapstore', 'node_modules'))]
+            : []),
+        'node_modules'
+    ]
+});

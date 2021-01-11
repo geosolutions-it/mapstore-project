@@ -3,5 +3,6 @@ node_modules/
 test-project/
 package-lock.json
 version.txt
+!*/**/version.txt
 *.tgz
 .vscode

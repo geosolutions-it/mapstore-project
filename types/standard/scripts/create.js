@@ -18,6 +18,7 @@ const gitignoreBody = `
 node_modules/
 node/
 dist/
+build/
 target/
 *.sublime-*
 npm-debug.log
@@ -88,10 +89,11 @@ function create(params) {
         'eslintConfig': mapsStoreProjectPackageJSON.eslintConfig,
         'scripts': {
             ...packageJSON.scripts,
-            'compile': 'mapstore-project compile',
-            'start': 'mapstore-project start',
-            'test': 'mapstore-project test',
-            'test:watch': 'mapstore-project test:watch'
+            'compile': 'mapstore-project compile standard',
+            'lint': 'eslint js --ext .jsx,.js',
+            'start': 'mapstore-project start standard',
+            'test': 'mapstore-project test standard',
+            'test:watch': 'mapstore-project test:watch standard'
         },
         'devDependencies': {
             ...packageJSON.devDependencies,
