@@ -14,7 +14,7 @@ import { checkForMissingPlugins } from '@mapstore/framework/utils/DebugUtils';
 import { setConfigProp, setLocalConfigurationFile }  from '@mapstore/framework/utils/ConfigUtils';
 
 setConfigProp('translationsPath', ['ms-translations', 'translations']);
-setLocalConfigurationFile('configs/localConfig.json');
+setLocalConfigurationFile('ms-configs/localConfig.json');
 
 checkForMissingPlugins(apiPlugins.plugins);
 

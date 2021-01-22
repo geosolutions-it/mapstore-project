@@ -46,6 +46,10 @@ const devServerDefault = {
             target: 'http://localhost:8081/node_modules/mapstore/web/client',
             pathRewrite: {'^/ms-translations': '/translations'}
         },
+        '/ms-configs': {
+            target: 'http://localhost:8081/node_modules/@mapstore/project/types/standard',
+            pathRewrite: {'^/ms-configs': '/defaultConfigs'}
+        },
         '/libs': {
             target: 'http://localhost:8081/node_modules/mapstore/web/client'
         }

@@ -68,7 +68,7 @@ module.exports = buildConfig({
         extractThemesPlugin,
         new CopyWebpackPlugin([
             // mapstore product
-            { from: path.join(paths.framework, 'configs'), to: path.join(paths.dist, 'ms-configs') },
+            { from: path.join(appDirectory, 'node_modules', '@mapstore', 'project', 'types', 'standard', 'defaultConfigs'), to: path.join(paths.dist, 'ms-configs') },
             { from: path.join(paths.framework, 'translations'), to: path.join(paths.dist, 'ms-translations') },
             { from: path.join(paths.framework, 'libs', 'cesium-navigation'), to: path.join(paths.dist, 'libs', 'cesium-navigation') },
             { from: path.join(paths.base, 'configs'), to: path.join(paths.dist, 'configs') },
