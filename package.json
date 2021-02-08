@@ -101,12 +101,12 @@
     "vusion-webfonts-generator": "0.4.1",
     "webpack": "5.9.0",
     "webpack-bundle-size-analyzer": "2.0.2",
-    "webpack-cli": "4.3.1",
+    "webpack-cli": "4.5.0",
     "webpack-dev-server": "3.11.0",
     "yargs": "16.1.0"
   },
   "devDependencies": {
-    "geonode-mapstore-client": "git+https://github.com/GeoNode/geonode-mapstore-client#d5bd40d44913b5ce8cd493c7f29381bb3ae60469",
-    "mapstore": "git+https://github.com/geosolutions-it/MapStore2.git#5dee7722240b6932a696df7ea13e502e269b9e2c"
+    "geonode-mapstore-client": "git+https://github.com/GeoNode/geonode-mapstore-client#master",
+    "mapstore": "git+https://github.com/geosolutions-it/MapStore2.git#mapstore-project"
   }
 }
