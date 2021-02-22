@@ -120,7 +120,13 @@ module.exports = () => {
                 const hashRegex = /\.[a-zA-Z0-9]{1,}\.js/;
                 app.use(function(req, res, next) {
                     // remove hash from requests to use the local js
-                    if (req.url.indexOf('/ms2-geonode-api') !== -1) {
+                    const appsName = [
+                        'ms2-geonode-api',
+                        ...geoNodeMapStoreApps,
+                        ...(projectConfig.apps || [])
+                    ]
+                        .find(name => req.url.indexOf('/' + name) !== -1 );
+                    if (appsName) {
                         req.url = req.url.replace(hashRegex, '.js');
                         req.path = req.path.replace(hashRegex, '.js');
                         req.originalUrl = req.originalUrl.replace(hashRegex, '.js');
