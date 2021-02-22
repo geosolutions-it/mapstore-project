@@ -1,6 +1,6 @@
 {
   "name": "@mapstore/project",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "create a mapstore project",
   "main": "index.js",
   "eslintConfig": {
