@@ -55,7 +55,7 @@ module.exports = () => {
         [
             extractThemesPlugin,
             new DefinePlugin({
-                '__GEONODE_PROJECT_CONFIG__': JSON.stringify({
+                '__MAPSTORE_PROJECT_CONFIG__': JSON.stringify({
                     version,
                     translationsPath: Object.keys(projectConfig.translations)
                 })
