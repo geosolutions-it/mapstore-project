@@ -19,6 +19,7 @@ const mapStorePath = fs.realpathSync(path.join(appDirectory, 'node_modules', 'ma
 const frameworkPath = path.join(mapStorePath, 'web', 'client');
 
 const extractThemesPlugin = require(path.resolve(mapStorePath, './build/themes.js')).extractThemesPlugin;
+const moduleFederationPlugin = require(path.resolve(mapStorePath, './build/moduleFederation.js')).plugin;
 const buildConfig = require(path.resolve(mapStorePath, './build/buildConfig.js'));
 
 const projectConfig = require('./index.js');
@@ -44,7 +45,15 @@ module.exports = () => {
                 frameworkPath
             ]
         },
-        extractThemesPlugin,
+        [
+            extractThemesPlugin,
+            new DefinePlugin({
+                '__GEONODE_PROJECT_CONFIG__': JSON.stringify({
+                    translationsPath: Object.keys(projectConfig.translations)
+                })
+            }),
+            moduleFederationPlugin
+        ],
         false,
         '/static/mapstore/dist/',
         '.msgapi',
@@ -75,14 +84,6 @@ module.exports = () => {
                 ['themes/' + name]: path.join(appDirectory, 'themes', name, 'theme.less')
             }), {})
         },
-        plugins: [
-            ...mapStoreConfig.plugins,
-            new DefinePlugin({
-                '__GEONODE_PROJECT_CONFIG__': JSON.stringify({
-                    translationsPath: Object.keys(projectConfig.translations)
-                })
-            })
-        ],
         resolve: {
             ...mapStoreConfig.resolve,
             modules: [

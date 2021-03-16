@@ -20,6 +20,7 @@ const mapStorePath = path.join(appDirectory, 'node_modules', 'mapstore');
 const frameworkPath = path.join(mapStorePath, 'web', 'client');
 
 const extractThemesPlugin = require(path.resolve(mapStorePath, './build/themes.js')).extractThemesPlugin;
+const moduleFederationPlugin = require(path.resolve(mapStorePath, './build/moduleFederation.js')).plugin;
 const buildConfig = require(path.resolve(mapStorePath, './build/buildConfig.js'));
 
 const projectConfig = require('./index.js');
@@ -51,18 +52,20 @@ module.exports = () => {
                 ...(isProject ? [] : [ path.join(appDirectory, 'MapStore2', 'web', 'client') ])
             ]
         },
-        extractThemesPlugin,
-        true,
-        publicPath,
-        '.msgapi',
         [
+            extractThemesPlugin,
             new DefinePlugin({
                 '__GEONODE_PROJECT_CONFIG__': JSON.stringify({
                     version,
                     translationsPath: Object.keys(projectConfig.translations)
                 })
             }),
-
+            moduleFederationPlugin
+        ],
+        true,
+        publicPath,
+        '.msgapi',
+        [
             // new BundleAnalyzerPlugin(),
 
             new CopyWebpackPlugin([
