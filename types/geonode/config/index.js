@@ -80,7 +80,9 @@ module.exports = assign(
     {
         version: version,
         devServer: {
-            host: devServer.host || envJson.DEV_SERVER_HOST || 'localhost:8000',
+            host: devServer.host || envJson.DEV_SERVER_HOST || 'localhost',
+            port: devServer.port || envJson.DEV_SERVER_PORT || '8081',
+            proxyTargetHost: devServer.proxyTargetHost || envJson.DEV_SERVER_PROXY_TARGET_HOST || 'localhost:8000',
             protocol: devServer.protocol || envJson.DEV_SERVER_HOST_PROTOCOL || 'http'
         },
         extend: {

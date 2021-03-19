@@ -24,7 +24,9 @@ const buildConfig = require(path.resolve(mapStorePath, './build/buildConfig.js')
 
 const projectConfig = require('./index.js');
 
-const DEV_SERVER_HOST = projectConfig.devServer.host;
+const devServerHost = projectConfig.devServer.host;
+const devServerPort = projectConfig.devServer.port;
+const proxyTargetHost = projectConfig.devServer.proxyTargetHost;
 const protocol = projectConfig.devServer.protocol;
 
 const geoNodeMapStoreAppsPath = path.join(geoNodeMapStorePath, 'js', 'apps');
@@ -111,6 +113,8 @@ module.exports = () => {
         devServer: {
             clientLogLevel: 'debug',
             https: protocol === 'https' ? true : false,
+            host: devServerHost,
+            port: devServerPort,
             headers: {
                 'Access-Control-Allow-Origin': '*'
             },
@@ -143,10 +147,10 @@ module.exports = () => {
                         '!**/MapStore2/**',
                         '!**/node_modules/**'
                     ],
-                    target: `${protocol}://${DEV_SERVER_HOST}`,
+                    target: `${protocol}://${proxyTargetHost}`,
                     headers: {
-                        Host: DEV_SERVER_HOST,
-                        Referer: `${protocol}://${DEV_SERVER_HOST}/`
+                        Host: proxyTargetHost,
+                        Referer: `${protocol}://${proxyTargetHost}/`
                     }
                 },
                 {
@@ -154,7 +158,7 @@ module.exports = () => {
                         ...Object.keys(projectConfig.translations)
                             .map(key => `${key}/**`)
                     ],
-                    target: `${protocol}://localhost:8081`,
+                    target: `${protocol}://${devServerHost}:${devServerPort}`,
                     secure: false,
                     changeOrigin: true,
                     pathRewrite: {
