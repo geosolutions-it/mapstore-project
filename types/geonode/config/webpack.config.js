@@ -70,7 +70,6 @@ module.exports = () => {
     return {
         ...mapStoreConfig,
         entry: {
-            'ms2-geonode-api': path.join(geoNodeMapStorePath, 'js', 'api'),
             ...geoNodeMapStoreApps.reduce((acc, name) => ({
                 ...acc,
                 [name.replace(/\.jsx|\.js/g, '')]: path.join(geoNodeMapStorePath, 'js', 'apps', name)
@@ -126,7 +125,6 @@ module.exports = () => {
                 app.use(function(req, res, next) {
                     // remove hash from requests to use the local js
                     const appsName = [
-                        'ms2-geonode-api',
                         ...geoNodeMapStoreApps,
                         ...(projectConfig.apps || [])
                     ]
