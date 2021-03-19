@@ -25,7 +25,6 @@ const buildConfig = require(path.resolve(mapStorePath, './build/buildConfig.js')
 const projectConfig = require('./index.js');
 
 const devServerHost = projectConfig.devServer.host;
-const devServerPort = projectConfig.devServer.port;
 const proxyTargetHost = projectConfig.devServer.proxyTargetHost;
 const protocol = projectConfig.devServer.protocol;
 
@@ -113,7 +112,6 @@ module.exports = () => {
             clientLogLevel: 'debug',
             https: protocol === 'https' ? true : false,
             host: devServerHost,
-            port: devServerPort,
             headers: {
                 'Access-Control-Allow-Origin': '*'
             },
@@ -156,7 +154,7 @@ module.exports = () => {
                         ...Object.keys(projectConfig.translations)
                             .map(key => `${key}/**`)
                     ],
-                    target: `${protocol}://${devServerHost}:${devServerPort}`,
+                    target: `${protocol}://${devServerHost}:8081`,
                     secure: false,
                     changeOrigin: true,
                     pathRewrite: {
