@@ -20,6 +20,9 @@ standard-project/
 |    |-- new.json
 |    |-- newgeostory.json
 |    +-- ... others config files
+|-- java/
+|    |-- services
+|    +-- web
 |-- js/
 |    |-- apps/
 |    |    |-- mapstore.jsx
@@ -36,7 +39,6 @@ standard-project/
 |-- .gitignore
 |-- README.md
 |-- build.sh
-|-- pom.xml
 |-- index.ejs (optional)
 |-- ... others html templates (ejs)
 |-- devServer.js (optional)
@@ -51,7 +53,10 @@ Folders and files description:
   - `js/apps` each file in this folder becomes automatically a javascript entry. This folder must contain only javascript files
 - `themes` each directory in this folder becomes automatically a theme entry. The name of the folder becomes the name of the style and a theme.less file is needed to represent the main theme entry
 - `translations` custom translations for the project
-- `build.sh` build script, when run, produces target/mapstore.war
+- `java` backend modules
+  - `java/services` custom backend services of the project
+  - `java/web` module that will build the final war
+- `build.sh` build script, when run, produces java/web/target/mapstore.war
 - `pom.xml` backend build configuration
 
 ## Configuration and customizations

@@ -129,7 +129,9 @@ npm run compile
 
 echo "Building backend"
 echo \`date\`
+cd java
 mvn clean install ${params.profiles ? "-P" + normalizeProfiles(params.profiles) : ""}
+cd ..
 `;
 
     fs.writeFileSync(path.resolve(clientFolder, "build.sh"), buildScript)

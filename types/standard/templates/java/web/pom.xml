@@ -21,6 +21,11 @@
       <type>war</type>
       <scope>runtime</scope>
     </dependency>
+    <dependency>
+      <groupId>it.geosolutions.mapstore</groupId>
+      <artifactId>mapstore-project-services</artifactId>
+      <version>1.3-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -41,7 +46,7 @@
                         <encoding>UTF-8</encoding>
                         <resources>
                             <resource>
-                                <directory>${basedir}/dist</directory>
+                                <directory>${basedir}/../../dist</directory>
                             </resource>
                         </resources>
                     </configuration>
@@ -188,7 +193,7 @@
                             <encoding>UTF-8</encoding>
                             <resources>
                                 <resource>
-                                    <directory>node_modules/mapstore/java/printing/webapp</directory>
+                                    <directory>../../node_modules/mapstore/java/printing/webapp</directory>
                                     <includes>
                                         <include>**/applicationContext-print.xml</include>
                                     </includes>
@@ -207,7 +212,7 @@
                             <encoding>UTF-8</encoding>
                             <resources>
                                 <resource>
-                                    <directory>node_modules/mapstore/java/printing/resources/geoserver/print</directory>
+                                    <directory>../../node_modules/mapstore/java/printing/resources/geoserver/print</directory>
                                 </resource>
                             </resources>
                         </configuration>
@@ -247,7 +252,7 @@
                             </goals>
                             <configuration>
                             <overWrite>true</overWrite>
-                            <sourceFile>node_modules/@mapstore/project/types/standard/config/db/geostore-spring-security-db.xml</sourceFile>
+                            <sourceFile>../../node_modules/@mapstore/project/types/standard/config/db/geostore-spring-security-db.xml</sourceFile>
                             <destinationFile>target/mapstore/WEB-INF/classes/geostore-spring-security.xml</destinationFile>
                             </configuration>
                         </execution>
@@ -276,7 +281,7 @@
                             </goals>
                             <configuration>
                             <overWrite>true</overWrite>
-                            <sourceFile>node_modules/@mapstore/project/types/standard/ldap/geostore-spring-security-ldap.xml</sourceFile>
+                            <sourceFile>../../node_modules/@mapstore/project/types/standard/ldap/geostore-spring-security-ldap.xml</sourceFile>
                             <destinationFile>target/mapstore/WEB-INF/classes/geostore-spring-security.xml</destinationFile>
                             </configuration>
                         </execution>
