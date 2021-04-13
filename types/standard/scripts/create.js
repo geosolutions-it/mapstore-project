@@ -62,6 +62,9 @@ function readParam(rl, params, result) {
     });
 }
 
+const normalizeProfiles = (profiles) =>
+    profiles.split(',').map(s => s.trim().toLowerCase()).join(",");
+
 function readParams(paramsDesc) {
     const rl = readline.createInterface({
         input: process.stdin,
@@ -87,6 +90,7 @@ function create(params) {
         'version': params.version || packageJSON.version || '1.0.0',
         'description': params.description || packageJSON.description || 'mapstore project',
         'eslintConfig': mapsStoreProjectPackageJSON.eslintConfig,
+        "browserslist": mapsStoreProjectPackageJSON.browserslist,
         'scripts': {
             ...packageJSON.scripts,
             'compile': 'mapstore-project compile standard',
@@ -112,10 +116,37 @@ function create(params) {
 
     fs.writeFileSync(path.resolve(clientFolder, '.gitignore'), gitignoreBody);
 
+    const buildScript = `
+set -e
+
+echo "Running NPM install to update dependencies"
+echo \`date\`
+npm install
+
+echo "Building frontend"
+echo \`date\`
+npm run compile
+
+echo "Building backend"
+echo \`date\`
+mvn clean install ${params.profiles ? "-P" + normalizeProfiles(params.profiles) : ""}
+`;
+
+    fs.writeFileSync(path.resolve(clientFolder, "build.sh"), buildScript)
+
     fs.copySync(path.resolve(__dirname, '..', 'templates'), path.resolve(clientFolder));
 }
 
 const isProject = !fs.existsSync(path.resolve(appDirectory, 'bin/mapstore-project.js'));
+
+const profiles = [
+    "printing",
+    "ldap"
+]
+
+function isValidProfile(profile) {
+    return profiles.includes(profile)
+}
 
 if (isProject) {
 
@@ -127,6 +158,11 @@ if (isProject) {
             'name': 'name',
             'default': 'mapstore-project',
             'validate': () => true
+        }, {
+            'label': '  - Optional features (printing, ldap): ',
+            'name': 'profiles',
+            'default': '',
+            'validate': (val) => normalizeProfiles(val).split(",").every(isValidProfile)
         }
     ];
 
