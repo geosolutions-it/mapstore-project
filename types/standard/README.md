@@ -15,12 +15,14 @@ standard-project/
 |    |    |-- favicon.ico
 |    |    +-- ... others static image files
 |    +-- ... assets files similar to static
-|-- backend/
 |-- configs/
 |    |-- localConfig.json
 |    |-- new.json
 |    |-- newgeostory.json
 |    +-- ... others config files
+|-- java/
+|    |-- services
+|    +-- web
 |-- js/
 |    |-- apps/
 |    |    |-- mapstore.jsx
@@ -36,13 +38,14 @@ standard-project/
 |    +-- ... others translations
 |-- .gitignore
 |-- README.md
+|-- build.sh
 |-- index.ejs (optional)
 |-- ... others html templates (ejs)
 |-- devServer.js (optional)
 |-- package.json
 ```
 
-Folders description:
+Folders and files description:
 
 - `assets` this folder contains all the additional static resources
 - `configs` this folder contains all the json configuration files
@@ -50,6 +53,11 @@ Folders description:
   - `js/apps` each file in this folder becomes automatically a javascript entry. This folder must contain only javascript files
 - `themes` each directory in this folder becomes automatically a theme entry. The name of the folder becomes the name of the style and a theme.less file is needed to represent the main theme entry
 - `translations` custom translations for the project
+- `java` backend modules
+  - `java/services` custom backend services of the project
+  - `java/web` module that will build the final war
+- `build.sh` build script, when run, produces java/web/target/mapstore.war
+- `pom.xml` backend build configuration
 
 ## Configuration and customizations
 

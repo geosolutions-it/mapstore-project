@@ -31,12 +31,15 @@ const extractThemesPlugin = require(path.resolve(frameworkPath, '../../build/the
 
 const webClientProductPath = path.resolve(frameworkPath, 'product');
 
+const jsPath = "js";
+
 const paths = {
     base: path.resolve(appDirectory),
     dist: path.resolve(appDirectory, output),
     framework: frameworkPath,
+    chunks: jsPath + "/",
     code: [
-        path.join(appDirectory, 'js'),
+        path.join(appDirectory, jsPath),
         frameworkPath
     ]
 };
@@ -50,10 +53,10 @@ module.exports = () => {
         publicPath,
         cssPrefix: `.${themePrefix}`,
         bundles: {
-            'js/mapstore': path.join(webClientProductPath, 'app'),
+            [jsPath + '/mapstore']: path.join(webClientProductPath, 'app'),
             ...(projectConfig.apps || []).reduce((acc, name) => ({
                 ...acc,
-                ['js/' + name.replace(/\.jsx|\.js/g, '')]: path.join(appDirectory, 'js', 'apps', name)
+                [jsPath + '/' + name.replace(/\.jsx|\.js/g, '')]: path.join(appDirectory, jsPath, 'apps', name)
             }), {})
         },
         themeEntries: {
@@ -66,7 +69,7 @@ module.exports = () => {
         paths,
         alias: {
             '@mapstore/framework': paths.framework,
-            '@js': path.resolve(appDirectory, 'js')
+            '@js': path.resolve(appDirectory, jsPath)
         },
         plugins: [
             extractThemesPlugin,
