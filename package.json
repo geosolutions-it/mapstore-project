@@ -122,6 +122,6 @@
   },
   "devDependencies": {
     "geonode-mapstore-client": "git+https://github.com/GeoNode/geonode-mapstore-client#master",
-    "mapstore": "git+https://github.com/geosolutions-it/MapStore2.git#mapstore-project"
+    "mapstore": "git+https://github.com/geosolutions-it/MapStore2.git#master"
   }
 }
