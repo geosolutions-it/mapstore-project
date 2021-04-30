@@ -8,6 +8,7 @@
 
 const fs = require('fs-extra');
 const path = require('path');
+const rimraf = require('rimraf');
 const childProcess = require('child_process');
 const readline = require('readline-promise').default;
 const message = require(path.resolve(__dirname, '..', '..', '..', 'scripts/utils/message'));
@@ -126,17 +127,22 @@ npm install
 echo "Building frontend"
 echo \`date\`
 npm run compile
-
+${params.includeBackend === 'yes' ? `
 echo "Building backend"
 echo \`date\`
 cd java
 mvn clean install ${params.profiles ? "-P" + normalizeProfiles(params.profiles) : ""}
 cd ..
+` : ''}
 `;
 
-    fs.writeFileSync(path.resolve(clientFolder, "build.sh"), buildScript)
+    fs.writeFileSync(path.resolve(clientFolder, "build.sh"), buildScript);
 
     fs.copySync(path.resolve(__dirname, '..', 'templates'), path.resolve(clientFolder));
+
+    if (params.includeBackend !== 'yes') {
+        rimraf.sync(path.resolve(clientFolder, 'java'));
+    }
 }
 
 const isProject = !fs.existsSync(path.resolve(appDirectory, 'bin/mapstore-project.js'));
@@ -144,10 +150,10 @@ const isProject = !fs.existsSync(path.resolve(appDirectory, 'bin/mapstore-projec
 const profiles = [
     "printing",
     "ldap"
-]
+];
 
 function isValidProfile(profile) {
-    return profiles.includes(profile)
+    return profiles.includes(profile);
 }
 
 if (isProject) {
@@ -161,10 +167,20 @@ if (isProject) {
             'default': 'mapstore-project',
             'validate': () => true
         }, {
+            'label': '  - Include backend (yes/no default yes): ',
+            'name': 'includeBackend',
+            'default': 'yes',
+            'validate': () => true
+        }, {
             'label': '  - Optional features (printing, ldap): ',
             'name': 'profiles',
             'default': '',
-            'validate': (val) => normalizeProfiles(val).split(",").every(isValidProfile)
+            'validate': (val) => !val || normalizeProfiles(val).split(",").every(isValidProfile)
+        }, {
+            'label': '  - Run npm install after creation setup (yes/no default yes): ',
+            'name': 'runInstall',
+            'default': 'yes',
+            'validate': () => true
         }
     ];
 
@@ -172,16 +188,18 @@ if (isProject) {
         .then((params) => {
             create(params);
             message.success('create project - success');
-            message.title('npm install');
-            const clientFolder = path.resolve(appDirectory, params.name);
-            childProcess
-                .execSync(
-                    'npm install',
-                    {
-                        stdio: 'inherit',
-                        cwd: clientFolder
-                    }
-                );
+            if (params.runInstall === 'yes') {
+                message.title('npm install');
+                const clientFolder = path.resolve(appDirectory, params.name);
+                childProcess
+                    .execSync(
+                        'npm install',
+                        {
+                            stdio: 'inherit',
+                            cwd: clientFolder
+                        }
+                    );
+            }
             process.exit();
         })
         .catch((e) => {
