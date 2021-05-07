@@ -65,14 +65,20 @@ Folders and files description:
 
 The `mapstore` property inside the package.json allows to override and/or customize some configuration of the project. These are the available parameters:
 
-- `templateParameters` _{object}_ overrides parameters of default html templates (index.ejs, embedded.ejs, api.ejs and unsupportedBrowser.ejs)
-- templateParameters.`titleIndex` _{string}_
-- templateParameters.`titleEmbedded` _{string}_
-- templateParameters.`titleApi` _{string}_
-- templateParameters.`favicon` _{string}_
-- templateParameters.`loadingMessageIndex` _{string}_
-- templateParameters.`loadingMessageEmbedded` _{string}_
-- templateParameters.`titleUnsupported` _{string}_
+| property | type | description |
+| --- | --- | --- |
+| `apps` | _{array}_ | mapstore application location. List of .js or .jsx entries: directories or files |
+| `html` | _{array}_ | mapstore html templates location. List of .ejs or .html entries: directories or files |
+| `themes` | _{array}_ | mapstore .less themes location. List of .ejs or .html entries: directories or files |
+| `templateParameters` | _{object}_ | overrides parameters of default html templates (index.ejs, embedded.ejs, api.ejs and unsupportedBrowser.ejs) |
+| templateParameters.`titleIndex` | _{string}_ |  |
+| templateParameters.`titleEmbedded` | _{string}_ |  |
+| templateParameters.`titleApi` | _{string}_ |  |
+| templateParameters.`favicon` | _{string}_ |  |
+| templateParameters.`loadingMessageIndex` | _{string}_ |  |
+| templateParameters.`loadingMessageEmbedded` | _{string}_ |  |
+| templateParameters.`titleUnsupported` | _{string}_ |  |
+
 
 Example of mapstore configuration in package.json:
 
@@ -80,6 +86,22 @@ Example of mapstore configuration in package.json:
 {
     // ...others package.json properties,
     "mapstore": {
+        "apps": [
+            "path/to/dir-of-apps", // scan directory for js or jsx
+            "path/to/dir/index.js", // point to a single file
+            ["path/to/dir/fileName.js", "file-name"] // point to a single file and replace the bundle name 
+        ],
+        "html": [
+            "path/to/dir-of-ejs", // scan directory for ejs
+            "path/to/dir/index.ejs", // point to a single file
+            ["path/to/dir/pageName.ejs", "page-name.html"] // point to a single file and replace the html name
+        ],
+        "themes": [
+            "path/to/dir-themes", // scan directory for folder containing theme.less (name from folder)
+            "path/to/dir-themes/default", // folder containing theme.less (name from folder)
+            "path/to/dir-themes/default/theme.less" // theme.less file to use (name from folder)
+        ]
+    },
         "templateParameters": {
             "favicon": "path/to/favicon"
         }

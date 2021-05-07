@@ -95,7 +95,7 @@ const appsPaths = mapstoreConfig.apps || [
     [path.join(webClientProductPath, 'api'), 'ms2-api'],
     path.join(appDirectory, 'js')
 ];
-const ejsPaths = mapstoreConfig.ejs || [
+const htmlPaths = mapstoreConfig.html || [
     path.resolve(__dirname, '..'), appDirectory
 ];
 const themesPaths = mapstoreConfig.themes || [
@@ -106,8 +106,11 @@ const jsPath = "js/";
 const apps = readEntriesPaths(appsPaths, ({ dirName, baseName, entryName }) => ({
     [jsPath + (entryName || baseName).replace(/\.jsx|\.js/g, '')]: path.join(dirName, baseName)
 }));
-const htmlTemplates = readEntriesPaths(ejsPaths, ({ dirName, baseName, entryName }) => baseName.indexOf('.ejs') !== -1
+const htmlTemplates = readEntriesPaths(htmlPaths, ({ dirName, baseName, entryName }) => baseName.indexOf('.ejs') !== -1
     ? { [entryName || baseName.replace('.ejs', '.html')]: path.join(dirName, baseName)} : {}
+);
+const html = readEntriesPaths(htmlPaths, ({ dirName, baseName, entryName }) => baseName.indexOf('.html') !== -1
+    ? { [entryName || baseName]: path.join(dirName, baseName)} : {}
 );
 const themes = readEntriesPaths(themesPaths, ({ dirName, baseName }) => {
     if (baseName.indexOf('theme.less') !== -1) {
@@ -136,5 +139,6 @@ module.exports = {
     apps,
     devServer: devServer(devServerDefault),
     htmlTemplates,
+    html,
     templateParameters: mapstoreConfig.templateParameters || {}
 };

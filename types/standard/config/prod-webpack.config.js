@@ -55,7 +55,11 @@ module.exports = buildConfig({
                 : [],
             ...fs.existsSync(path.join(paths.base, 'static'))
                 ? [{ from: path.join(paths.base, 'static'), to: path.join(paths.dist, 'static') }]
-                : []
+                : [],
+            ...Object.keys(projectConfig.html).map((name) => ({
+                from: projectConfig.html[name],
+                to: path.join(paths.dist, name)
+            }))
         ]),
         ...Object.keys(projectConfig.htmlTemplates).map((key) =>
             new HtmlWebpackPlugin({
