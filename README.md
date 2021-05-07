@@ -9,8 +9,6 @@ Available MapStore project types:
 
 - [standard](types/standard/README.md)
 
-- [geonode](types/geonode/README.md)
-
 ## Required tools
 
 - `node` v12.18.4
