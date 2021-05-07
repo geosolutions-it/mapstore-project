@@ -18,20 +18,12 @@ const output = '';
 const projectConfig = require('./index.js');
 const templateParameters = require('./templateParameters');
 
-const isProject = !fs.existsSync(path.join(appDirectory, 'web', 'client', 'product'));
-
-const frameworkPath = !isProject
-    ? path.join(appDirectory, 'web', 'client')
-    : fs.existsSync(path.resolve(appDirectory, './MapStore2'))
-        ? path.join(appDirectory, 'MapStore2', 'web', 'client')
-        : path.join(appDirectory, 'node_modules', 'mapstore', 'web', 'client');
+const frameworkPath = projectConfig.frameworkPath;
 
 const buildConfig = require(path.resolve(frameworkPath, '../../build/buildConfig'));
 const extractThemesPlugin = require(path.resolve(frameworkPath, '../../build/themes.js')).extractThemesPlugin;
 
-const webClientProductPath = path.resolve(frameworkPath, 'product');
-
-const jsPath = "js";
+const jsPath = projectConfig.jsPath;
 
 const paths = {
     base: path.resolve(appDirectory),
@@ -52,20 +44,8 @@ module.exports = () => {
         prod: false,
         publicPath,
         cssPrefix: `.${themePrefix}`,
-        bundles: {
-            [jsPath + '/mapstore']: path.join(webClientProductPath, 'app'),
-            ...(projectConfig.apps || []).reduce((acc, name) => ({
-                ...acc,
-                [jsPath + '/' + name.replace(/\.jsx|\.js/g, '')]: path.join(appDirectory, jsPath, 'apps', name)
-            }), {})
-        },
-        themeEntries: {
-            'themes/default': path.join(paths.framework, 'themes', 'default', 'theme.less'),
-            ...(projectConfig.themes || []).reduce((acc, name) => ({
-                ...acc,
-                ['themes/' + name]: path.join(appDirectory, 'themes', name, 'theme.less')
-            }), {})
-        },
+        bundles: projectConfig.apps,
+        themeEntries: projectConfig.themes,
         paths,
         alias: {
             '@mapstore/framework': paths.framework,
@@ -102,7 +82,7 @@ module.exports = () => {
             'node_modules'
         ],
         devServer: {
-            contentBase: isProject ? '.' : 'web/client',
+            contentBase: '.',
             ...projectConfig.devServer
         }
     });
