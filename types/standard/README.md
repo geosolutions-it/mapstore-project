@@ -100,12 +100,11 @@ Example of mapstore configuration in package.json:
             "path/to/dir-themes", // scan directory for folder containing theme.less (name from folder)
             "path/to/dir-themes/default", // folder containing theme.less (name from folder)
             "path/to/dir-themes/default/theme.less" // theme.less file to use (name from folder)
-        ]
-    },
+        ],
         "templateParameters": {
             "favicon": "path/to/favicon"
         }
-    }
+    },
 }
 ```
 
