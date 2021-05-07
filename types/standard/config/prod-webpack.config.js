@@ -19,24 +19,15 @@ const output = 'dist/';
 const projectConfig = require('./index.js');
 const templateParameters = require('./templateParameters');
 
-const isProject = !fs.existsSync(path.join(appDirectory, 'web', 'client', 'product'));
-
-const frameworkPath = !isProject
-    ? path.join(appDirectory, 'web', 'client')
-    : fs.existsSync(path.resolve(appDirectory, './MapStore2'))
-        ? path.join(appDirectory, 'MapStore2', 'web', 'client')
-        : path.join(appDirectory, 'node_modules', 'mapstore', 'web', 'client');
+const frameworkPath = projectConfig.frameworkPath;
 
 const buildConfig = require(path.resolve(frameworkPath, '../../build/buildConfig'));
 const extractThemesPlugin = require(path.resolve(frameworkPath, '../../build/themes.js')).extractThemesPlugin;
 
-const webClientProductPath = path.resolve(frameworkPath, 'product');
-const jsPath = "js";
+const jsPath = projectConfig.jsPath;
 const paths = {
     base: path.resolve(appDirectory),
-    dist: isProject
-        ? path.resolve(appDirectory, output)
-        : path.resolve(frameworkPath, output),
+    dist: path.resolve(appDirectory, output),
     framework: frameworkPath,
     chunks: jsPath + "/",
     code: [
@@ -48,22 +39,8 @@ const paths = {
 const themePrefix = projectConfig.name;
 
 module.exports = buildConfig({
-    bundles: {
-        [jsPath + '/mapstore']: path.join(webClientProductPath, 'app'),
-        [jsPath + '/embedded']: path.join(webClientProductPath, 'embedded'),
-        [jsPath + '/ms2-api']: path.join(webClientProductPath, 'api'),
-        ...(projectConfig.apps || []).reduce((acc, name) => ({
-            ...acc,
-            [jsPath + '/' + name.replace(/\.jsx|\.js/g, '')]: path.join(appDirectory, jsPath, 'apps', name)
-        }), {})
-    },
-    themeEntries: {
-        'themes/default': path.join(paths.framework, 'themes', 'default', 'theme.less'),
-        ...(projectConfig.themes || []).reduce((acc, name) => ({
-            ...acc,
-            ['themes/' + name]: path.join(appDirectory, 'themes', name, 'theme.less')
-        }), {})
-    },
+    bundles: projectConfig.apps,
+    themeEntries: projectConfig.themes,
     paths,
     plugins: [
         extractThemesPlugin,
@@ -78,7 +55,11 @@ module.exports = buildConfig({
                 : [],
             ...fs.existsSync(path.join(paths.base, 'static'))
                 ? [{ from: path.join(paths.base, 'static'), to: path.join(paths.dist, 'static') }]
-                : []
+                : [],
+            ...Object.keys(projectConfig.html).map((name) => ({
+                from: projectConfig.html[name],
+                to: path.join(paths.dist, name)
+            }))
         ]),
         ...Object.keys(projectConfig.htmlTemplates).map((key) =>
             new HtmlWebpackPlugin({
