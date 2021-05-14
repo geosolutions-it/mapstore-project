@@ -67,11 +67,15 @@ function readEntriesPaths(entriesPaths, parse) {
         const stats = fs.lstatSync(absolutePath);
         if (stats.isDirectory()) {
             const dirName = absolutePath;
-            return fs.readdirSync(dirName)
+            const dirEntries = fs.readdirSync(dirName)
                 .reduce((parsed, baseName) => ({
                     ...parsed,
                     ...parse({ dirName, baseName })
                 }), {});
+            return {
+                ...acc,
+                ...dirEntries
+            };
         }
         if (stats.isFile()) {
             const dirName = path.dirname(absolutePath);
@@ -90,10 +94,10 @@ function readEntriesPaths(entriesPaths, parse) {
 }
 
 const appsPaths = mapstoreConfig.apps || [
-    [path.join(webClientProductPath, 'app'), 'mapstore'],
-    path.join(webClientProductPath, 'embedded'),
-    [path.join(webClientProductPath, 'api'), 'ms2-api'],
-    path.join(appDirectory, 'js')
+    [path.join(webClientProductPath, 'app.jsx'), 'mapstore'],
+    path.join(webClientProductPath, 'embedded.jsx'),
+    [path.join(webClientProductPath, 'api.jsx'), 'ms2-api'],
+    path.join(appDirectory, 'js', 'apps')
 ];
 const htmlPaths = mapstoreConfig.html || [
     path.resolve(__dirname, '..'), appDirectory
@@ -127,6 +131,22 @@ const themes = readEntriesPaths(themesPaths, ({ dirName, baseName }) => {
     }
     return {};
 });
+
+// for showing a short path in console report
+const simplifyEntryPath = (entryPath = "") => {
+    return entryPath.replace(appDirectory, ".");
+}
+const renderEntries = (entries) => {
+    return JSON.stringify(Object.keys(entries).reduce((acc,k) => ({...acc, [k]: simplifyEntryPath(entries[k])}), {}), null, 4)
+}
+
+// Show a summary of entries to build
+console.log(`
+Build Entries:
+- Apps: ${renderEntries(apps)}
+- HTML: ${renderEntries({...html, ...htmlTemplates})}
+- Themes: ${renderEntries(themes)}
+`);
 
 module.exports = {
     jsPath,
