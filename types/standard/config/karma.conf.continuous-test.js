@@ -21,6 +21,10 @@ module.exports = function karmaConfig(config) {
         basePath: appDirectory,
         path: code,
         testFile: testWebpackPath,
-        singleRun: false
+        singleRun: false,
+        alias: {
+            '@js': projectJSPath,
+            '@mapstore/framework': frameworkPath
+        }
     }));
 };
