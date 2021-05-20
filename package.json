@@ -1,6 +1,6 @@
 {
   "name": "@mapstore/project",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "create a mapstore project",
   "browserslist": {
     "production": [
