@@ -66,7 +66,7 @@ module.exports = ({browsers = [ 'ChromeHeadless' ], files, path, testFile, singl
             rules: [
                 {
                     test: /\.jsx?$/,
-                    exclude: /node_modules/,
+                    exclude: /node_modules\/(?!(mapstore|@mapstore)\/).*/,
                     use: [{
                         loader: 'babel-loader',
                         options: {
