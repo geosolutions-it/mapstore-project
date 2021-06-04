@@ -102,6 +102,7 @@ module.exports = () => {
                 [name.replace(/\.jsx|\.js/g, '')]: path.join(appDirectory, 'js', 'apps', name)
             }), {}),
             'themes/default': path.join(geoNodeMapStorePath, 'themes', 'default', 'theme.less'),
+            'themes/geonode': path.join(geoNodeMapStorePath, 'themes', 'geonode', 'theme.less'),
             'themes/preview': path.join(geoNodeMapStorePath, 'themes', 'preview', 'theme.less'),
             ...(projectConfig.themes || []).reduce((acc, name) => ({
                 ...acc,
