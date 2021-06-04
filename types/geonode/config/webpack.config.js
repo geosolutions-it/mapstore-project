@@ -8,7 +8,6 @@
 
 const path = require('path');
 const fs = require('fs');
-const DefinePlugin = require('webpack/lib/DefinePlugin');
 
 const appDirectory = fs.realpathSync(process.cwd());
 const isProject = !!fs.existsSync(path.join(appDirectory, 'node_modules', 'geonode-mapstore-client', 'geonode_mapstore_client', 'client'));
@@ -33,36 +32,38 @@ const geoNodeMapStoreApps = fs.existsSync(geoNodeMapStoreAppsPath) ? fs.readdirS
 
 module.exports = () => {
 
+    const themePrefix = 'msgapi';
+    const paths = {
+        base: appDirectory,
+        dist: path.join(appDirectory, 'dist'),
+        framework: frameworkPath,
+        code: [
+            path.join(geoNodeMapStorePath, 'js'),
+            path.join(appDirectory, 'js'),
+            frameworkPath
+        ]
+    };
+
     const mapStoreConfig = buildConfig(
-        {},
-        {},
         {
-            base: appDirectory,
-            dist: path.join(appDirectory, 'dist'),
-            framework: frameworkPath,
-            code: [
-                path.join(geoNodeMapStorePath, 'js'),
-                path.join(appDirectory, 'js'),
-                frameworkPath
-            ]
-        },
-        [
-            extractThemesPlugin,
-            new DefinePlugin({
-                '__MAPSTORE_PROJECT_CONFIG__': JSON.stringify({
-                    translationsPath: Object.keys(projectConfig.translations)
-                })
-            }),
-            moduleFederationPlugin
-        ],
-        false,
-        '/static/mapstore/dist/',
-        '.msgapi',
-        [],
-        {
-            '@js': path.resolve(geoNodeMapStorePath, 'js'),
-            '@mapstore/framework': frameworkPath,
-            ...projectConfig.extend
+            prod: false,
+            publicPath: '/static/mapstore/dist/',
+            cssPrefix: `.${themePrefix}`,
+            bundles: {},
+            themeEntries: {},
+            paths,
+            alias: {
+                '@js': path.resolve(geoNodeMapStorePath, 'js'),
+                '@mapstore/framework': frameworkPath,
+                ...projectConfig.extend
+            },
+            plugins: [
+                extractThemesPlugin,
+                moduleFederationPlugin
+            ],
+            projectConfig: {
+                translationsPath: Object.keys(projectConfig.translations)
+            }
         }
     );
 

@@ -36,57 +36,56 @@ const geoNodeMapStoreApps = fs.existsSync(geoNodeMapStoreAppsPath) ? fs.readdirS
 
 module.exports = () => {
 
-    const mapStoreConfig = buildConfig(
-        {},
-        {},
-        {
-            base: appDirectory,
-            dist: path.join(appDirectory, distPath),
-            framework: frameworkPath,
-            code: [
-                path.join(geoNodeMapStorePath, 'js'),
-                path.join(appDirectory, 'js'),
-                frameworkPath,
-                // add MapStore2 path for "file:MapStore2" installation
-                // to target the correct directory
-                ...(isProject ? [] : [ path.join(appDirectory, 'MapStore2', 'web', 'client') ])
-            ]
-        },
-        [
-            extractThemesPlugin,
-            new DefinePlugin({
-                '__MAPSTORE_PROJECT_CONFIG__': JSON.stringify({
-                    version,
-                    translationsPath: Object.keys(projectConfig.translations)
-                })
-            }),
-            moduleFederationPlugin
-        ],
-        true,
-        publicPath,
-        '.msgapi',
-        [
-            // new BundleAnalyzerPlugin(),
+    const themePrefix = 'msgapi';
+    const paths = {
+        base: appDirectory,
+        dist: path.join(appDirectory, distPath),
+        framework: frameworkPath,
+        code: [
+            path.join(geoNodeMapStorePath, 'js'),
+            path.join(appDirectory, 'js'),
+            frameworkPath,
+            // add MapStore2 path for "file:MapStore2" installation
+            // to target the correct directory
+            ...(isProject ? [] : [ path.join(appDirectory, 'MapStore2', 'web', 'client') ])
+        ]
+    };
 
-            new CopyWebpackPlugin([
-                {
-                    from: path.resolve(appDirectory, 'static/mapstore'),
-                    to: path.resolve(appDirectory, staticPath)
-                },
-                ...Object.keys(projectConfig.translations).map((key) => ({
-                    from: projectConfig.translations[key][0],
-                    to: path.resolve(appDirectory, staticPath + '/' + projectConfig.translations[key][1])
-                })),
-                {
-                    from: path.resolve(appDirectory, 'version.txt'),
-                    to: path.resolve(appDirectory, staticPath)
-                }
-            ])
-        ],
+    const mapStoreConfig = buildConfig(
         {
-            '@js': path.resolve(geoNodeMapStorePath, 'js'),
-            '@mapstore/framework': frameworkPath,
-            ...projectConfig.extend
+            prod: false,
+            publicPath,
+            cssPrefix: `.${themePrefix}`,
+            bundles: {},
+            themeEntries: {},
+            paths,
+            alias: {
+                '@js': path.resolve(geoNodeMapStorePath, 'js'),
+                '@mapstore/framework': frameworkPath,
+                ...projectConfig.extend
+            },
+            plugins: [
+                extractThemesPlugin,
+                moduleFederationPlugin,
+                new CopyWebpackPlugin([
+                    {
+                        from: path.resolve(appDirectory, 'static/mapstore'),
+                        to: path.resolve(appDirectory, staticPath)
+                    },
+                    ...Object.keys(projectConfig.translations).map((key) => ({
+                        from: projectConfig.translations[key][0],
+                        to: path.resolve(appDirectory, staticPath + '/' + projectConfig.translations[key][1])
+                    })),
+                    {
+                        from: path.resolve(appDirectory, 'version.txt'),
+                        to: path.resolve(appDirectory, staticPath)
+                    }
+                ])
+            ],
+            projectConfig: {
+                version,
+                translationsPath: Object.keys(projectConfig.translations)
+            }
         }
     );
 
