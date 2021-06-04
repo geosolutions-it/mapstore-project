@@ -53,7 +53,7 @@ module.exports = () => {
 
     const mapStoreConfig = buildConfig(
         {
-            prod: false,
+            prod: true,
             publicPath,
             cssPrefix: `.${themePrefix}`,
             bundles: {},
