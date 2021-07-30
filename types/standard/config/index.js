@@ -19,9 +19,9 @@ const mapstoreConfig = packageJSON.mapstore || {};
 const { commit } = info();
 const version = commit;
 
-const frameworkPath = fs.existsSync(path.resolve(appDirectory, './MapStore2'))
+const frameworkPath = fs.realpathSync(fs.existsSync(path.resolve(appDirectory, './MapStore2'))
     ? path.join(appDirectory, 'MapStore2', 'web', 'client')
-    : path.join(appDirectory, 'node_modules', 'mapstore', 'web', 'client');
+    : path.join(appDirectory, 'node_modules', 'mapstore', 'web', 'client'));
 const webClientProductPath = path.resolve(frameworkPath, 'product');
 const devServerPath = path.join(appDirectory, 'devServer.js');
 
