@@ -13,11 +13,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const appDirectory = fs.realpathSync(process.cwd());
 
-const publicPath = '';
-const output = 'dist/';
-
 const projectConfig = require('./index.js');
 const templateParameters = require('./templateParameters');
+
+const publicPath = projectConfig.publicPath || '';
+const output = projectConfig.output || 'dist/';
 
 const frameworkPath = projectConfig.frameworkPath;
 
@@ -36,7 +36,7 @@ const paths = {
     ]
 };
 
-const themePrefix = projectConfig.name;
+const themePrefix = projectConfig.themePrefix || projectConfig.name;
 
 module.exports = buildConfig({
     bundles: projectConfig.apps,
