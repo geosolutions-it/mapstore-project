@@ -56,7 +56,6 @@ const devServerDefault = {
         }
     }
 };
-const devServer = fs.existsSync(devServerPath) ? require(devServerPath) : () => devServerDefault;
 
 function readEntriesPaths(entriesPaths, parse) {
     return entriesPaths.reduce((acc, entriesPath) => {
@@ -148,7 +147,11 @@ Build Entries:
 - Themes: ${renderEntries(themes)}
 `);
 
-module.exports = {
+const config = {
+    themePrefix: mapstoreConfig.themePrefix,
+    publicPath: mapstoreConfig.publicPath,
+    output: mapstoreConfig.output,
+    appDirectory,
     jsPath,
     frameworkPath,
     webClientProductPath,
@@ -157,8 +160,14 @@ module.exports = {
     // translations,
     themes,
     apps,
-    devServer: devServer(devServerDefault),
     htmlTemplates,
     html,
     templateParameters: mapstoreConfig.templateParameters || {}
+};
+
+const devServer = fs.existsSync(devServerPath) ? require(devServerPath) : () => devServerDefault;
+
+module.exports = {
+    ...config,
+    devServer: devServer(devServerDefault, config)
 };
