@@ -25,6 +25,15 @@ if (fs.existsSync(cleanPath)) {
         );
 }
 
+const preCompile = path.join(__dirname, '..', 'types', argv.type, 'scripts', 'preCompile.js');
+if (fs.existsSync(preCompile)) {
+    childProcess
+        .execSync(
+            `node ${preCompile}`,
+            { stdio: 'inherit' }
+        );
+}
+
 const versionPath = path.join(__dirname, 'version.js');
 childProcess
     .execSync(

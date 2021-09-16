@@ -27,7 +27,8 @@
       }
     },
     "globals": {
-      "__MAPSTORE_PROJECT_CONFIG__": false
+      "__MAPSTORE_PROJECT_CONFIG__": false,
+      "__MAPSTORE_EXTENSION_CONFIG__": false
     }
   },
   "scripts": {
@@ -119,7 +120,8 @@
     "webpack-bundle-size-analyzer": "2.0.2",
     "webpack-cli": "4.5.0",
     "webpack-dev-server": "3.11.0",
-    "yargs": "16.1.0"
+    "yargs": "16.1.0",
+    "zip-webpack-plugin": "3.0.0"
   },
   "devDependencies": {
     "geonode-mapstore-client": "git+https://github.com/GeoNode/geonode-mapstore-client#master",
