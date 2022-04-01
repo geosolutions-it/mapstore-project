@@ -21,6 +21,7 @@ const output = projectConfig.output || '';
 const frameworkPath = projectConfig.frameworkPath;
 
 const buildConfig = require(path.resolve(frameworkPath, '../../build/buildConfig'));
+const moduleFederationPlugin = require(path.resolve(frameworkPath, '../../build/moduleFederation.js')).plugin;
 const extractThemesPlugin = require(path.resolve(frameworkPath, '../../build/themes.js')).extractThemesPlugin;
 
 const jsPath = projectConfig.jsPath;
@@ -53,6 +54,7 @@ module.exports = () => {
         },
         plugins: [
             extractThemesPlugin,
+            moduleFederationPlugin,
             ...Object.keys(projectConfig.htmlTemplates).map((key) =>
                 new HtmlWebpackPlugin({
                     inject: false,
