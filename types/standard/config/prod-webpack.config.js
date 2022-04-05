@@ -22,6 +22,7 @@ const output = projectConfig.output || 'dist/';
 const frameworkPath = projectConfig.frameworkPath;
 
 const buildConfig = require(path.resolve(frameworkPath, '../../build/buildConfig'));
+const moduleFederationPlugin = require(path.resolve(frameworkPath, '../../build/moduleFederation.js')).plugin;
 const extractThemesPlugin = require(path.resolve(frameworkPath, '../../build/themes.js')).extractThemesPlugin;
 
 const jsPath = projectConfig.jsPath;
@@ -44,6 +45,7 @@ module.exports = buildConfig({
     paths,
     plugins: [
         extractThemesPlugin,
+        moduleFederationPlugin,
         new CopyWebpackPlugin([
             // mapstore product
             { from: path.join(appDirectory, 'node_modules', '@mapstore', 'project', 'types', 'standard', 'defaultConfigs'), to: path.join(paths.dist, 'ms-configs') },
