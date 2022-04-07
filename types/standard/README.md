@@ -132,3 +132,28 @@ function devServer(devServerDefaultConfiguration) {
 module.exports = devServer;
 ```
 
+### Developing with custom MapStore
+
+!!! note 
+    this is a procedure that is still under testing
+
+A standard project has now these dependencies: 
+
+```json
+"dependencies": {
+    "mapstore": "git+https://github.com/geosolutions-it/MapStore2.git#master"
+  },
+```
+
+You can point to a different branch (e.g. stable) by changing the URL (`#mapster` --> `#2022.01.xx`). 
+Anyway if you want to depend on your local version of MapStore, with some customization you are developing, you should: 
+
+- remove `node_modules` and `package-lock.json`
+- create a local folder called `local_modules` in the root of the project (no need to commit) where to place `MapStore2` directory with the code of MapStore. 
+- add the `local_modules` to `.gitignore`
+- change the dependency of `mapstore` as following in `package.json`:
+```json
+  "dependencies": {
+    "mapstore": "./local_modules/MapStore2"
+  },
+```
