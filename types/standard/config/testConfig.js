@@ -140,15 +140,20 @@ module.exports = ({browsers = [ 'ChromeHeadless' ], files, path, testFile, singl
             new ProvidePlugin({
                 Buffer: ['buffer', 'Buffer']
             }),
+            // needed complete env object for cesium tests
             new webpack.DefinePlugin({
-                'process.env.NODE_ENV': JSON.stringify('development')
+                process: { env: { 'NODE_ENV': JSON.stringify('development') } }
             }),
             new webpack.DefinePlugin({
                 '__MAPSTORE_PROJECT_CONFIG__': JSON.stringify({})
             }),
-            new webpack.ProvidePlugin({
-                process: 'process/browser'
-            })
+            new webpack.DefinePlugin({
+                // Define relative base path in cesium for loading assets
+                'CESIUM_BASE_URL': JSON.stringify(nodePath.join(basePath, 'node_modules', 'cesium', 'Source'))
+            }),
+            // it's not possible to load directly from the module name `cesium/Build/Cesium/Widgets/widgets.css`
+            // see https://github.com/CesiumGS/cesium/issues/9212
+            new NormalModuleReplacementPlugin(/^cesium\/index\.css$/, nodePath.join(basePath, 'node_modules', 'cesium/Build/Cesium/Widgets/widgets.css'))
         ]
     },
     webpackServer: {

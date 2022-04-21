@@ -47,6 +47,7 @@ module.exports = () => {
         cssPrefix: `.${themePrefix}`,
         bundles: projectConfig.apps,
         themeEntries: projectConfig.themes,
+        cesiumBaseUrl: projectConfig.cesiumBaseUrl || path.join('cesium'),
         paths,
         alias: {
             '@mapstore/framework': paths.framework,

@@ -162,7 +162,8 @@ const config = {
     apps,
     htmlTemplates,
     html,
-    templateParameters: mapstoreConfig.templateParameters || {}
+    templateParameters: mapstoreConfig.templateParameters || {},
+    cesiumBaseUrl: mapstoreConfig.cesiumBaseUrl
 };
 
 const devServer = fs.existsSync(devServerPath) ? require(devServerPath) : () => devServerDefault;

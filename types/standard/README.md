@@ -70,6 +70,7 @@ The `mapstore` property inside the package.json allows to override and/or custom
 | `apps` | _{array}_ | mapstore application location. List of .js or .jsx entries: directories or files |
 | `html` | _{array}_ | mapstore html templates location. List of .ejs or .html entries: directories or files |
 | `themes` | _{array}_ | mapstore .less themes location: directories or files |
+| `cesiumBaseUrl` | _{string}_ | location of cesium assets. Related to final dist folder |
 | `output` | _{string}_ | output directory location |
 | `publicPath` | _{string}_ | public path used by the application |
 | `themePrefix` | _{string}_ | class name used to wrap all the classes inside the mapstore themes |
