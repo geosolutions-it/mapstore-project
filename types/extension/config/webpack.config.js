@@ -18,10 +18,12 @@ const webpackConfig = createExtensionWebpackConfig({
     prod: false,
     name: extensionName,
     plugins: [
-        new DefinePlugin({ '__MAPSTORE_EXTENSION_CONFIG__': JSON.stringify({
-            name: extensionName,
-            version: projectConfig.version
-        }) })
+        new DefinePlugin({
+            '__MAPSTORE_EXTENSION_CONFIG__': JSON.stringify({
+                name: extensionName,
+                version: projectConfig.version
+            })
+        })
     ],
     ...commons,
     overrides: {
@@ -30,7 +32,12 @@ const webpackConfig = createExtensionWebpackConfig({
             clientLogLevel: 'debug',
             publicPath: "/extension/",
             contentBase: './assets',
-            contentBasePublicPath: '/extension/'
+            contentBasePublicPath: '/extension/',
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+                "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
+            }
         }
     }
 });
