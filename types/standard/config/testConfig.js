@@ -5,6 +5,7 @@ const fs = require('fs');
 const ProvidePlugin = require("webpack/lib/ProvidePlugin");
 const appDirectory = fs.realpathSync(process.cwd());
 const mapStorePath = fs.realpathSync(nodePath.join(appDirectory, 'node_modules', 'mapstore'));
+const NormalModuleReplacementPlugin = require("webpack/lib/NormalModuleReplacementPlugin");
 
 module.exports = ({browsers = [ 'ChromeHeadless' ], files, path, testFile, singleRun, basePath = ".", alias = {}}) => ({
     browsers,
