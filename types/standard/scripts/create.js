@@ -156,6 +156,25 @@ function isValidProfile(profile) {
     return profiles.includes(profile);
 }
 
+function initGit(folder) {
+    return new Promise((resolve, reject) => {
+        message.title('git initialization');
+        const git = require('simple-git')(folder);
+        git.init(() => {
+            git.add(['*'], () => {
+                git.commit('setup project', (err) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve();
+                        message.title('setup project commit created');
+                    }
+                });
+            });
+        });
+    });
+}
+
 if (isProject) {
 
     message.title('create project');
@@ -187,20 +206,23 @@ if (isProject) {
     readParams(paramsDesc)
         .then((params) => {
             create(params);
-            message.success('create project - success');
-            if (params.runInstall === 'yes') {
-                message.title('npm install');
-                const clientFolder = path.resolve(appDirectory, params.name);
-                childProcess
-                    .execSync(
-                        'npm install',
-                        {
-                            stdio: 'inherit',
-                            cwd: clientFolder
-                        }
-                    );
-            }
-            process.exit();
+            const clientFolder = path.resolve(appDirectory, params.name);
+            return initGit(clientFolder)
+                .then(() => {
+                    if (params.runInstall === 'yes') {
+                        message.title('npm install');
+                        childProcess
+                            .execSync(
+                                'npm install',
+                                {
+                                    stdio: 'inherit',
+                                    cwd: clientFolder
+                                }
+                            );
+                    }
+                    message.success('create project - success');
+                    process.exit();
+                });
         })
         .catch((e) => {
             message.error('create project - error');

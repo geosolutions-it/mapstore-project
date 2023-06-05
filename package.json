@@ -125,6 +125,6 @@
     "zip-webpack-plugin": "3.0.0"
   },
   "devDependencies": {
-    "mapstore": "git+https://github.com/geosolutions-it/MapStore2.git#2022.02.xx"
+    "mapstore": "git+https://github.com/geosolutions-it/MapStore2.git#2023.01.xx"
   }
 }
