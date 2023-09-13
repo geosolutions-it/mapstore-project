@@ -26,7 +26,7 @@ const moduleFederationPlugin = require(path.resolve(frameworkPath, '../../build/
 const extractThemesPlugin = require(path.resolve(frameworkPath, '../../build/themes.js')).extractThemesPlugin;
 
 const ensureTrailingSlash = (path) => {
-    return path?.endsWith("/") ? path : path + "/"
+    return path.endsWith("/") ? path : path + "/"
 }
 const jsPath = ensureTrailingSlash(projectConfig.jsPath);
 const paths = {
