@@ -25,12 +25,15 @@ const buildConfig = require(path.resolve(frameworkPath, '../../build/buildConfig
 const moduleFederationPlugin = require(path.resolve(frameworkPath, '../../build/moduleFederation.js')).plugin;
 const extractThemesPlugin = require(path.resolve(frameworkPath, '../../build/themes.js')).extractThemesPlugin;
 
-const jsPath = projectConfig.jsPath;
+const ensureTrailingSlash = (path) => {
+    return path?.endsWith("/") ? path : path + "/"
+}
+const jsPath = ensureTrailingSlash(projectConfig.jsPath);
 const paths = {
     base: path.resolve(appDirectory),
     dist: path.resolve(appDirectory, output),
     framework: frameworkPath,
-    chunks: jsPath + "/",
+    chunks: jsPath,
     code: [
         path.join(appDirectory, jsPath),
         frameworkPath
