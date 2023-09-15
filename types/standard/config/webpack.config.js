@@ -30,7 +30,7 @@ const paths = {
     base: path.resolve(appDirectory),
     dist: path.resolve(appDirectory, output),
     framework: frameworkPath,
-    chunks: jsPath + "/",
+    chunks: jsPath,
     code: [
         path.join(appDirectory, jsPath),
         frameworkPath
