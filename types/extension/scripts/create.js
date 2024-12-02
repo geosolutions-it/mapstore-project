@@ -98,7 +98,7 @@ function create(params) {
         },
         'devDependencies': {
             ...packageJSON.devDependencies,
-            '@mapstore/project': libVersion + ''
+            '@mapstore/project': `git+https://github.com/geosolutions-it/mapstore-project.git#${libVersion}`
         },
         'dependencies': {
             ...packageJSON.dependencies,
