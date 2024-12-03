@@ -42,7 +42,7 @@ const themePrefix = projectConfig.themePrefix || projectConfig.name;
 module.exports = buildConfig({
     bundles: projectConfig.apps,
     themeEntries: projectConfig.themes,
-    cesiumBaseUrl: projectConfig.cesiumBaseUrl || path.join('cesium'),
+    cesiumBaseUrl: projectConfig.cesiumBaseUrl !== undefined ? projectConfig.cesiumBaseUrl : path.join('cesium'),
     paths,
     plugins: [
         extractThemesPlugin,
