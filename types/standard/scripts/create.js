@@ -8,7 +8,7 @@
 
 const fs = require('fs-extra');
 const path = require('path');
-const rimraf = require('rimraf');
+const { premove } = require('premove/sync');
 const childProcess = require('child_process');
 const readline = require('readline-promise').default;
 const message = require(path.resolve(__dirname, '..', '..', '..', 'scripts/utils/message'));
@@ -141,7 +141,7 @@ cd ..
     fs.copySync(path.resolve(__dirname, '..', 'templates'), path.resolve(clientFolder));
 
     if (params.includeBackend !== 'yes') {
-        rimraf.sync(path.resolve(clientFolder, 'java'));
+        premove(path.resolve(clientFolder, 'java'));
     }
 }
 

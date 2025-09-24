@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
 */
 
-const rimraf = require('rimraf');
+const { premove } = require('premove/sync');
 const fs = require('fs');
 const path = require('path');
 const message = require('../../../scripts/utils/message');
@@ -18,6 +18,6 @@ const distDirectory = isProject
     ? path.resolve(appDirectory, 'dist')
     : path.join(appDirectory, 'web', 'client', 'dist');
 
-rimraf.sync(distDirectory);
+premove(distDirectory);
 fs.mkdirSync(distDirectory, { recursive: true });
 message.title('clean static directory');
