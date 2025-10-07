@@ -38,6 +38,7 @@ const paths = {
 };
 
 const themePrefix = projectConfig.themePrefix || projectConfig.name;
+const isCompileDevMode = process.env.MAPSTORE_COMPILE_DEV === 'true';
 
 module.exports = buildConfig({
     bundles: projectConfig.apps,
@@ -79,7 +80,9 @@ module.exports = buildConfig({
             })
         )
     ],
-    prod: true,
+    prod: !isCompileDevMode,
+    mode: isCompileDevMode ? 'development' : 'production',
+    devtool: isCompileDevMode ? 'source-map' : false,
     publicPath,
     cssPrefix: `.${themePrefix}`,
     alias: {
@@ -89,7 +92,7 @@ module.exports = buildConfig({
     projectConfig: {
         themePath: publicPath + 'themes',
         themePrefix: themePrefix,
-        version: projectConfig.version
+        version: isCompileDevMode ? 'dev-staging' : projectConfig.version
     },
     resolveModules: [
         // resolve module installed inside the MapStore2 submodule
