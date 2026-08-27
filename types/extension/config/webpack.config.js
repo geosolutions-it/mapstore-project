@@ -29,10 +29,16 @@ const webpackConfig = createExtensionWebpackConfig({
     overrides: {
         // serve translations (and index.json)
         devServer: {
-            clientLogLevel: 'debug',
-            publicPath: "/extension/",
-            contentBase: './assets',
-            contentBasePublicPath: '/extension/',
+            client: {
+                logging: 'verbose'
+            },
+            devMiddleware: {
+                publicPath: '/extension/'
+            },
+            "static": {
+                directory: path.resolve(__dirname, './assets'),
+                publicPath: '/extension/'
+            },
             headers: {
                 "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",

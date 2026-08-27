@@ -85,7 +85,9 @@ module.exports = () => {
             'node_modules'
         ],
         devServer: {
-            contentBase: '.',
+            "static": {
+                directory: appDirectory
+            },
             ...projectConfig.devServer
         }
     });
